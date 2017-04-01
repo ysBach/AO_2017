@@ -11811,7 +11811,7 @@ cases, we have to make elliptical model rotated by certain angle. Those fitting 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[32]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">astropy.modeling.functional_models</span> <span class="k">import</span> <span class="n">Moffat1D</span><span class="p">,</span> <span class="n">Gaussian1D</span>
@@ -12948,11 +12948,11 @@ RU5ErkJggg==
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[56]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">astropy.io.ascii</span> <span class="k">import</span> <span class="n">read</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="s1">&#39;../Ground_Based_Tutorial/data_0.dat&#39;</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="s1">&#39;Ground_Based_Tutorial/data_0.dat&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
 <span class="n">data</span><span class="o">.</span><span class="n">pprint</span>
 </pre></div>
@@ -12975,7 +12975,7 @@ RU5ErkJggg==
 </div>
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[56]:</div>
+<div class="prompt output_prompt">Out[2]:</div>
 
 
 
@@ -13061,7 +13061,7 @@ Note that $\sigma_s$ is calculated <em>before</em> we calculate the stellar magn
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[57]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -13143,12 +13143,12 @@ Note that $\sigma_s$ is calculated <em>before</em> we calculate the stellar magn
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[60]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">astropy.io.ascii</span> <span class="k">import</span> <span class="n">read</span>
-<span class="n">std</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="s1">&#39;../Ground_Based_Tutorial/data_std.dat&#39;</span><span class="p">)</span>
+<span class="n">std</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="s1">&#39;Ground_Based_Tutorial/data_std.dat&#39;</span><span class="p">)</span>
 <span class="n">std</span><span class="o">.</span><span class="n">pprint</span>
 </pre></div>
 
@@ -13161,7 +13161,7 @@ Note that $\sigma_s$ is calculated <em>before</em> we calculate the stellar magn
 
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[60]:</div>
+<div class="prompt output_prompt">Out[4]:</div>
 
 
 
@@ -13193,7 +13193,7 @@ Target    V     COLOR     B
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[65]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">data_std</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">std</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="s1">&#39;Target&#39;</span><span class="p">)</span>
@@ -13503,7 +13503,7 @@ gjUohmEYRiRYg2IYhmFEwv8H4bErqU29j7YAAAAASUVORK5CYII=
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[69]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="k">import</span> <span class="n">curve_fit</span>
@@ -13810,7 +13810,7 @@ V: z_V &amp; k_V = [-25.44562147   0.37269281]
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[70]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">fitting2</span><span class="p">(</span><span class="n">INPUT</span><span class="p">,</span> <span class="n">zero</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
@@ -13847,19 +13847,6 @@ b-v: z_C , k_C , a_C = [ 0.44555979 -0.07489208  0.95596985]
 </div>
 </div>
 
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-</div>
 </div>
 </div>
 

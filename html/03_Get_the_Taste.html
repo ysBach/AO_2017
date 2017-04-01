@@ -11801,15 +11801,15 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
 <span class="c1"># Load data</span>
-<span class="n">F450</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s1">&#39;../HST_Tutorial/F450W.dat&#39;</span><span class="p">)</span> <span class="c1"># NumPy automatically skips the commented rows.</span>
-<span class="n">F814</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s1">&#39;../HST_Tutorial/F814W.dat&#39;</span><span class="p">)</span>
+<span class="n">F450</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s1">&#39;HST_Tutorial/F450W.dat&#39;</span><span class="p">)</span> <span class="c1"># NumPy automatically skips the commented rows.</span>
+<span class="n">F814</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s1">&#39;HST_Tutorial/F814W.dat&#39;</span><span class="p">)</span>
 
 <span class="n">mask</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">F450</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
 <span class="n">color</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">F450</span><span class="p">))</span>
@@ -12232,7 +12232,7 @@ CIwxpsZZIjDGmBpnicAYY2qcJQJjjKlxlgiMMabG/T+PeNZ0YkoyrgAAAABJRU5ErkJggg==
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">F450</span><span class="p">[:,</span><span class="mi">5</span><span class="p">],</span> <span class="n">F450</span><span class="p">[:,</span><span class="mi">6</span><span class="p">],</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
@@ -12827,14 +12827,14 @@ o9FohuL/B4KVG0R2V6wIAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">astropy.io</span> <span class="k">import</span> <span class="n">fits</span>
 
-<span class="n">hduList</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;../HST_Tutorial/M87.fits&#39;</span><span class="p">)</span>
+<span class="n">hduList</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;HST_Tutorial/M87.fits&#39;</span><span class="p">)</span>
 <span class="n">hduList</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
 <span class="c1"># 0 (primary) : The primary header. No data included.</span>
 <span class="c1"># 1 (SCI)     : Science image, i.e., real data.</span>
@@ -12891,7 +12891,7 @@ o9FohuL/B4KVG0R2V6wIAAAAAElFTkSuQmCC
 <div class="prompt"></div>
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Filename: ../HST_Tutorial/M87.fits
+<pre>Filename: HST_Tutorial/M87.fits
 No.    Name         Type      Cards   Dimensions   Format
   0  PRIMARY     PrimaryHDU     426   ()      
   1  SCI         ImageHDU       110   (850, 850)   float32   
@@ -12936,19 +12936,6 @@ Ellipticity = 0.157, so E2 galaxy in Hubble sequence.
 
 </div>
 </div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-</div>
-</div>
-</div>
-
 </div>
     </div>
   </div>

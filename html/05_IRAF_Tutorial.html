@@ -11819,7 +11819,7 @@ div#notebook {
 
 </code></pre>
 <p>I recommend to use PyRAF, since AstroConda does not fully guarantee the stability of IRAF CL. The <code>IMEXAM</code>, for example, does not correctly work if you use <code>cl</code>. You will see the following on terminal with the prompt "<code>--&gt;</code>":</p>
-<p><img src='../images/IRAF_01.png' width='500'></p>
+<p><img src='images/IRAF_01.png' width='500'></p>
 
 </div>
 </div>
@@ -11832,7 +11832,7 @@ div#notebook {
 <h2 id="Display-Image">Display Image<a class="anchor-link" href="#Display-Image">&#182;</a></h2><p>PyRAF supports few LINUX commands, such as <code>ls</code> or <code>cd</code> without an exclamation mark (<code>!</code>). But to display image, you must use <code>!ds9</code> or <code>!ginga</code>. You should also use (<code>!</code>) when delete files using <code>rm</code>.</p>
 <p>Since IRAF is extremely comfortable when used with <code>SAO ds9</code>, I will use <code>ds9</code> throughout this note.</p>
 <p>Display the image:</p>
-<p><img src='../images/IRAF_02.png' width='500'></p>
+<p><img src='images/IRAF_02.png' width='500'></p>
 <ul>
 <li><strong>TIP</strong>: It's better to append the ampersand (<code>&amp;</code>) at the end of <code>ds9</code>. Try without it and see what happens.</li>
 <li><strong>TIP</strong>: Always try to use <code>tab</code> key on your keyboard to "autocomplete"!</li>
@@ -11868,7 +11868,7 @@ div#notebook {
 </code></pre>
 <p><code>epar</code> means "edit parameters. The task <code>IMCOMBINE</code> will do task of combining images using many options.</p>
 <p>We will combine all 12 images in the <code>bias/</code> directory, and make one output named <code>bias.fits</code> using so-called <strong>median combine</strong>, while all other options left as default:</p>
-<p><img src='../images/IRAF_bias_combine.png' width='500'></p>
+<p><img src='images/IRAF_bias_combine.png' width='500'></p>
 <p>In IRAF commands, <code>@filename</code> means "open the file named <code>filename</code>, and put the contents here". Since <code>bias.list</code> contains the list of file names of bias images,</p>
 
 <pre><code>@bias.list == KCD095601.fits, KCD095602.fits, ....... , KCD095627.fits
@@ -11898,7 +11898,7 @@ div#notebook {
 
 </code></pre>
 <p>I want to make the combined image as <code>flat0.fits</code> first. Then save the result of subtracting bias, i.e., "<code>flat0 - bias</code>", as <code>flat.fits</code>. Do the median combine first:</p>
-<p><img src='../images/IRAF_flat_combine.png' width='500'></p>
+<p><img src='images/IRAF_flat_combine.png' width='500'></p>
 <p>Now copy the master bias to here and subtract it from the combined flat:</p>
 
 <pre><code>--&gt; cp ../bias/bias.fits .
