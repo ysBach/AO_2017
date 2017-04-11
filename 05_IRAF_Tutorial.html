@@ -11797,7 +11797,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Run-PyRAF">Run PyRAF<a class="anchor-link" href="#Run-PyRAF">&#182;</a></h2><p>You can start IRAF environment (<em>not</em> IRAF itself!) by typing</p>
+<h2 id="1.-Run-PyRAF">1. Run PyRAF<a class="anchor-link" href="#1.-Run-PyRAF">&#182;</a></h2><p>You can start IRAF environment (<em>not</em> IRAF itself!) by typing</p>
 
 <pre><code>source activate iraf
 
@@ -11829,7 +11829,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Display-Image">Display Image<a class="anchor-link" href="#Display-Image">&#182;</a></h2><p>PyRAF supports few LINUX commands, such as <code>ls</code> or <code>cd</code> without an exclamation mark (<code>!</code>). But to display image, you must use <code>!ds9</code> or <code>!ginga</code>. You should also use (<code>!</code>) when delete files using <code>rm</code>.</p>
+<h2 id="2.-Display-Image">2. Display Image<a class="anchor-link" href="#2.-Display-Image">&#182;</a></h2><p>PyRAF supports few LINUX commands, such as <code>ls</code> or <code>cd</code> without an exclamation mark (<code>!</code>). But to display image, you must use <code>!ds9</code> or <code>!ginga</code>. You should also use (<code>!</code>) when delete files using <code>rm</code>.</p>
 <p>Since IRAF is extremely comfortable when used with <code>SAO ds9</code>, I will use <code>ds9</code> throughout this note.</p>
 <p>Display the image:</p>
 <p><img src='images/IRAF_02.png' width='500'></p>
@@ -11856,7 +11856,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Bias-Combine">Bias Combine<a class="anchor-link" href="#Bias-Combine">&#182;</a></h2><p>First, make the list of bias files. Go to the bias directory by "<code>--&gt; cd bias</code>" and type</p>
+<h2 id="3.-Bias-Combine">3. Bias Combine<a class="anchor-link" href="#3.-Bias-Combine">&#182;</a></h2><p>First, make the list of bias files. Go to the bias directory by "<code>--&gt; cd bias</code>" and type</p>
 
 <pre><code>--&gt; ls *.fits &gt; bias.list
 
@@ -11890,7 +11890,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Flat-Combine">Flat Combine<a class="anchor-link" href="#Flat-Combine">&#182;</a></h2><p>To make master flat, you have to subtract master bias from combined flat image. All are identical as that of bias, but subtract master bias from the final combined flat.</p>
+<h2 id="4.-Flat-Combine">4. Flat Combine<a class="anchor-link" href="#4.-Flat-Combine">&#182;</a></h2><p>To make master flat, you have to subtract master bias from combined flat image. All are identical as that of bias, but subtract master bias from the final combined flat.</p>
 
 <pre><code>--&gt; cd ../flat/
 --&gt; ls *.fits &gt; flat.list
@@ -11906,7 +11906,7 @@ div#notebook {
 --&gt; !ds9 -zscale flat.fits &amp;
 
 </code></pre>
-<p>It's very intuitive: <code>IMARITH image1 operator image2 output</code> means do the operation (<code>operator</code> can be <code>+, -, *, /</code>) to images (<code>image1</code>, <code>image2</code>) and save the result as <code>output</code>. <code>IMARITH</code> of course means image arithmentics. You can open the full options window as you did for <code>IMCOMBINE</code> by typing</p>
+<p>It's very intuitive: "<code>IMARITH image1 operator image2 output</code>" means do the operation (<code>operator</code> can be <code>+, -, *, /</code>) to images (<code>image1</code>, <code>image2</code>) and save the result as "<code>output</code>". <code>IMARITH</code> of course means image arithmetics. You can open the full options window as you did for <code>IMCOMBINE</code> by typing</p>
 
 <pre><code>--&gt; epar imarith
 
@@ -11922,7 +11922,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Preprocessing">Preprocessing<a class="anchor-link" href="#Preprocessing">&#182;</a></h2><p>Preprocessing is simply "(raw image - master bias)/(master flat)".</p>
+<h2 id="5.-Preprocessing">5. Preprocessing<a class="anchor-link" href="#5.-Preprocessing">&#182;</a></h2><p>Preprocessing is simply "(raw image - master bias)/(master flat)".</p>
 
 <pre><code>--&gt; cd ..
 --&gt; cp bias/bias.fits .
@@ -11969,7 +11969,10 @@ bf_KCD095631.fits  b_KCD095629.fits  flat.fits         KCD095631.fits
 
 </code></pre>
 <ul>
-<li><strong>TIP</strong>: Hit <code>tab</code> key and the next image will be displayed. Can you find something? What do you think it is?</li>
+<li><p><strong>TIP</strong>: Hit <code>tab</code> key and the next image will be displayed.</p>
+</li>
+<li><p><strong>Question</strong>: Hit <code>tab</code> key several times. Can you find something? What do you think it is?</p>
+</li>
 </ul>
 
 </div>
@@ -11980,7 +11983,7 @@ bf_KCD095631.fits  b_KCD095629.fits  flat.fits         KCD095631.fits
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="File-Information">File Information<a class="anchor-link" href="#File-Information">&#182;</a></h2><p>You may want to see the brief information, such as statistics or the so-called "header information", of images. You can do this via many ways.</p>
+<h2 id="6.-File-Information">6. File Information<a class="anchor-link" href="#6.-File-Information">&#182;</a></h2><p>You may want to see the brief information, such as statistics or the so-called "header information", of images. You can do this via many ways.</p>
 <h3 id="Statistics-from-IRAF">Statistics from IRAF<a class="anchor-link" href="#Statistics-from-IRAF">&#182;</a></h3><p>There is a task named <code>IMSTATISTICS</code> which gives some statistics for each image:</p>
 
 <pre><code>--&gt; imstatistics *.fits
@@ -12002,7 +12005,7 @@ bf_KCD095631.fits  b_KCD095629.fits  flat.fits         KCD095631.fits
 
 </code></pre>
 <ul>
-<li><strong>Question</strong>: Why do you think the results <code>bf_*.fits</code> have such low min/max values? Do you have better idea to cope with this issue? This becomes problemetic for IRAF: see <code>DAOEDIT</code> below.</li>
+<li><strong>Question</strong>: Why do you think the results <code>bf_*.fits</code> have such low min/max values? Do you have better idea to cope with this issue? This becomes bothersome for IRAF sometimes: see <code>DAOEDIT</code> section below.</li>
 <li><strong>Question</strong>: From file explorer, you can see the sizes of each image. The original <code>KCD*.fits</code> images are about 8.4 MB while the newly generated images are about twice larger. Why do you think this is so?</li>
 </ul>
 <h3 id="Header-from-ds9">Header from ds9<a class="anchor-link" href="#Header-from-ds9">&#182;</a></h3><p>On <code>ds9</code>, you can click on <code>file -&gt; header</code> to see all the header contents.</p>
@@ -12052,20 +12055,20 @@ EXPTIME =                 10.0 / [sec] Total integration time
 <p>More flexibility comes with <code>HSELECT</code> which means header select:</p>
 
 <pre><code>--&gt; hselect *.fits "$I, EXPTIME, UT" yes
-KCD095628.fits    120.0    11:04:53
-KCD095629.fits    120.0    11:09:00
-KCD095630.fits    120.0    11:13:15
-KCD095631.fits    120.0    11:17:22
-b_KCD095628.fits    120.0    11:04:53
-b_KCD095629.fits    120.0    11:09:00
-b_KCD095630.fits    120.0    11:13:15
-b_KCD095631.fits    120.0    11:17:22
-bf_KCD095628.fits    120.0    11:04:53
-bf_KCD095629.fits    120.0    11:09:00
-bf_KCD095630.fits    120.0    11:13:15
-bf_KCD095631.fits    120.0    11:17:22
-bias.fits    0.0    09:30:25
-flat.fits    10.0    19:27:15
+KCD095628.fits  120.0   11:04:53
+KCD095629.fits  120.0   11:09:00
+KCD095630.fits  120.0   11:13:15
+KCD095631.fits  120.0   11:17:22
+b_KCD095628.fits    120.0   11:04:53
+b_KCD095629.fits    120.0   11:09:00
+b_KCD095630.fits    120.0   11:13:15
+b_KCD095631.fits    120.0   11:17:22
+bf_KCD095628.fits   120.0   11:04:53
+bf_KCD095629.fits   120.0   11:09:00
+bf_KCD095630.fits   120.0   11:13:15
+bf_KCD095631.fits   120.0   11:17:22
+bias.fits   0.0 09:30:25
+flat.fits   10.0    19:27:15
 
 </code></pre>
 <p>You may understand what this task gets and gives. <code>I</code> is for "inputs", and it prints the filenames.</p>
@@ -12107,7 +12110,7 @@ flat.fits[2048,2048][real][none][]:flat</code></pre>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Primitive-Photometry">Primitive Photometry<a class="anchor-link" href="#Primitive-Photometry">&#182;</a></h2><h3 id="IMEXAMINE"><code>IMEXAMINE</code><a class="anchor-link" href="#IMEXAMINE">&#182;</a></h3><p>For photometry, let's use <code>IMEXAM</code> first. IRAF becomes extremely powerful when you use the interactive mode with the aid of <code>SAO ds9</code>.</p>
+<h2 id="7.-Primitive-Photometry">7. Primitive Photometry<a class="anchor-link" href="#7.-Primitive-Photometry">&#182;</a></h2><h3 id="IMEXAMINE"><code>IMEXAMINE</code><a class="anchor-link" href="#IMEXAMINE">&#182;</a></h3><p>For photometry, let's use <code>IMEXAM</code> first. IRAF becomes extremely powerful when you use the interactive mode with the aid of <code>SAO ds9</code>.</p>
 
 <pre><code>--&gt; !ds9 bf_KCD095628.fits &amp;
 --&gt; imexam
@@ -12121,10 +12124,285 @@ flat.fits[2048,2048][real][none][]:flat</code></pre>
    8.36  23.77   3.093 0.06386  0.3435 0.21  -80 4.83     2.34     2.94   2.79
 
 </code></pre>
-<p>The meaning of the result is explained at STScI manual website (<a href="http://stsdas.stsci.edu/cgi-bin/gethelp.cgi?imexamine">here</a>). The lines starting with <code>#</code> are comment lines, and they correspond to the next lines composed of numbers, which indicate the corresponding parameter. In the above, for example, the sky is estimated to be 0.05386 and the star flux is 3.093, with FWHM 2.94.</p>
+<p>The meaning of the result is explained at STScI manual website (<a href="http://stsdas.stsci.edu/cgi-bin/gethelp.cgi?imexamine">here</a>). The lines starting with <code>#</code> are comment lines, and they correspond to the next lines composed of numbers, which indicate the corresponding parameter. In the above, for example, the sky is estimated to be 0.05386 and the star flux is 3.093, with Moffat-fitted FWHM 2.94.</p>
 <p>Hitting <code>r</code> will show you the radial profile of the star from the photocenter. <code>s</code> shows the surface plot. These may be useful if you do the psf photometry in the future using IRAF.</p>
 <p>In the interactive mode, you can exit by hitting <code>q</code> key. Hit <code>?</code> key to see the manual or help on the terminal. You can scroll down with <code>enter</code> key and escape by hitting the <code>q</code> key. The manual here is a short version of the website version.</p>
-<h3 id="DAOEDIT"><code>DAOEDIT</code><a class="anchor-link" href="#DAOEDIT">&#182;</a></h3><p>In digiphot.daophot, there are many tasks. Quite many people do use the stand alone version (<a href="http://www.astrobetter.com/wiki/DAOphot">see here</a>). Since we will not use IRAF intensively throughout this semester, I will just briefly mention the tasks.</p>
+<h3 id="DAOEDIT"><code>DAOEDIT</code><a class="anchor-link" href="#DAOEDIT">&#182;</a></h3><p>In <code>DIGIPHOT.DAOPHOT</code>, there are many tasks. Quite many people do use the stand alone version (<a href="http://www.astrobetter.com/wiki/DAOphot">see here</a>). Since we will <em>not</em> use IRAF intensively throughout this semester, I will just briefly mention the tasks. First type "<code>daophot</code>" and you will see:</p>
+
+<pre><code>--&gt; daophot
+daophot/:
+ addstar        daotest         nstar           pexamine        psf
+ allstar        datapars@       pcalc           pfmerge         psort
+ centerpars@    findpars@       pconcat         phot            pstselect
+ daoedit        fitskypars@     pconvert        photpars@       seepsf
+ daofind        group           pdump           prenumber       setimpars
+ daopars@       grpselect       peak            pselect         substar
+
+</code></pre>
+<p>As an example, I measured few of the stars in the image by hitting <code>a</code> key on the image:</p>
+
+<pre><code>--&gt; !ds9 bf_KCD095628.fits &amp;
+--&gt; daoedit bf_KCD095628.fits
+Warning: Graphics overlay not available for display device.
+
+# XCENTER YCENTER       SKY SKYSIGMA    FWHM   COUNTS     MAG
+  1034.76 1036.13       0.1     0.00    2.99      2.9  -1.138
+  1007.33  990.14       0.1     0.00    3.01      0.8   0.199
+  1016.51 1004.80       0.1     0.00    2.90      0.2   1.752
+  1048.00  942.55       0.1     0.00    3.04      2.0  -0.767
+  1074.63  939.88       0.1     0.00    3.02      1.2  -0.221
+  1136.91  947.06       0.1     0.00    2.97      4.6  -1.652
+
+</code></pre>
+<p>Hit <code>r</code> to check whether the star is saturated. Hit <code>?</code> to see help, as usual.</p>
+<p>In the previous <strong>Question</strong>, I asked you what will happen if the min/max values of the image is too small. Now you see the problem: Due to the default decimal point print of <code>DAOEDIT</code>, <code>SKY</code> and <code>SKYSIGMA</code> (representative sky value and its error) are unrealistic. In reality, this should be something like 0.064 and 0.0011, i.e., roughly about 2% of fluctuation level. <strong>So I will <em>assume</em> that we've obtained the following results</strong>:</p>
+
+<pre><code># XCENTER YCENTER       SKY    SKYSIGMA    FWHM   COUNTS     MAG
+  1034.76 1036.13       0.064     0.0011    2.99      2.9  -1.138
+  1007.33  990.14       0.064     0.0011    3.01      0.8   0.199
+  1016.51 1004.80       0.064     0.0011    2.90      0.2   1.752
+  1048.00  942.55       0.064     0.0011    3.04      2.0  -0.767
+  1074.63  939.88       0.064     0.0011    3.02      1.2  -0.221
+  1136.91  947.06       0.064     0.0011    2.97      4.6  -1.652
+
+
+</code></pre>
+<ul>
+<li><strong>Question</strong>: When doing photometry (which we'll do in next section), people prefer <code>DAOEDIT</code> over <code>IMEXAM</code>. Why do you think so? Can you see what is the major difference between the outputs of these two?</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="8.-More-on-Photometry">8. More on Photometry<a class="anchor-link" href="#8.-More-on-Photometry">&#182;</a></h2><p>What you have obtained from <code>IMEXAM</code> and <code>DAOEDIT</code> are very primitive results. In theory, the seeing effect should be nearly identical to all the point sources in the image, so we should have same FWHM for each star. What we do is to accept average of the FWHMs of the stars I got above. You may have now realized that we had to choose stars that are quite isolated! If there is another star near it, then its profile may have been polluted, and thus the FWHM is unreliable.</p>
+<p>Let me show you how to get photometry result using <code>FWHM=3</code> (pixels).</p>
+<h3 id="Using-IRAF-PHOT">Using IRAF <code>PHOT</code><a class="anchor-link" href="#Using-IRAF-PHOT">&#182;</a></h3>
+<pre><code>--&gt; epar phot
+
+</code></pre>
+<p>Then set the parameters as in the figure below.</p>
+<p>(You can open up the parameter editor of DATAPARS, etc, by clicking on the <code>PSET datapars</code> OR typing <code>--&gt; epar datapars</code>.)</p>
+<p><img src="images/IRAF_PHOT_1.png" width=1000></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>You can hit <code>Save &amp; Quit</code> after setting all the values. They are explained below:</p>
+<p>Parameters in <a href="http://stsdas.stsci.edu/cgi-bin/gethelp.cgi?phot.hlp"><code>PHOT</code></a> will be used for the aperture photometry:</p>
+<ul>
+<li><code>image</code>: The input image name</li>
+<li><code>interactive</code>, <code>radplot</code>: You will see what we can do if you choose <code>interactive</code> mode. It is recommended to check "yes" to both of these.</li>
+<li><code>verify</code>: You can easily see what will be shown or hidden if you check <code>yes/no</code>. If <code>yes</code>, it <strong>re-asks</strong> about the parameters.</li>
+<li><code>verbose</code>: The word <strong>verbose</strong> means "display the results so that I can see what you are doing!" in computer world. </li>
+</ul>
+<p>Parameters in <a href="http://stsdas.stsci.edu/cgi-bin/gethelp.cgi?datapars.hlp"><code>DATAPARS</code></a> will be used for the flux calculation:</p>
+<ul>
+<li><code>fwhmpsf</code>: The FWHM we obtained from above (3.0)</li>
+<li><code>sigma</code>: The uncertainty in sky estimation (0.0011). This will not be used depending on <code>salgorithm</code> of <code>FITSKYPARS</code>. See below.</li>
+<li><code>ccdread</code>, <code>gain</code>, <code>exptime</code>: Put the header keywords, not the actual values.<ul>
+<li>In our case, the image does not contain the header for readout noise, so you may encounter warning from PyRAF when you run the task, but it does not halt the process. </li>
+<li>If you do not have the value in the header but still want to put, say, <code>ccdgain=5.0</code>, then you can use the parameter <code>readnoise</code>. Same goes true for gain, exposure time, etc.</li>
+</ul>
+</li>
+</ul>
+<p>Parameters in <a href="http://stsdas.stsci.edu/cgi-bin/gethelp.cgi?fitskypars.hlp"><code>FITSKYPARS</code></a> will be used for the sky estimation:</p>
+<ul>
+<li><code>salgorithm</code>: Quite many IRAF users are unaware of the sky estimation algorithm. You will learn it while using Python, but you can refer to the manual website linked above.</li>
+<li><code>annulus</code>, <code>dannulus</code>: To estimate the sky value, IRAF can only use method called "annulus". It means you are going to calculate the sky value and its uncertainty using the ring shaped region around the target (annulus with inner radius of <code>annulus</code> and outer radius of <code>annulus + dannulus</code>). <ul>
+<li>Rule Of Thumb: <code>annulus = 4*FWHM</code>, <code>dannulus = 2*FWHM</code> generally works well.</li>
+<li>More on sky estimation: IRAF does sigma clipping method to reject unrealistic sky values from the annulus defined by <code>annulus</code> and <code>dannulus</code>, centered at the target. To tune this rejection, you can change other parameters such as <code>sloclip</code>, <code>khist</code>, <code>binsize</code>, etc. You will learn what these do in the near future, and will make your own code to do the same thing.</li>
+</ul>
+</li>
+<li><code>skyvalue</code>: This will be used only when <code>salgorithm=const</code>.</li>
+</ul>
+<p>Parameters in <a href="http://stsdas.stsci.edu/cgi-bin/gethelp.cgi?photpars.hlp"><code>PHOTPARS</code></a> will be used for the photometric magnitude calculation with <code>DATAPARS</code>:</p>
+<ul>
+<li><code>apertures</code>: You have to sum the photon number within the aperture to get the stellar flux and thus magnitude. To do so, you have to set the aperture.<ul>
+<li>Rule Of Thumb: <code>apertures = 1.5 * FWHM</code> works well.</li>
+</ul>
+</li>
+<li><code>zmag</code>: The zero-point magnitude. You can set it to any value in theory, but 25 is used in general in practice.</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>After saving these, you MUST display the image by yourself.</p>
+
+<pre><code>--&gt; !ds9 bf_KCD095628.fits &amp;
+--&gt; phot
+The input image(s) ('bf_KCD095628.fits'): 
+Warning: Graphics overlay not available for display device.
+Warning: Image bf_KCD095628.fits  Keyword RONOISE not found.
+
+</code></pre>
+<p>Hit <code>?</code> to see the help. Usually you will use <code>f</code> (of <code>space bar</code> if you want to save the result immediately). Some other things, such as <code>c</code> or <code>t</code> may be used.</p>
+<ul>
+<li><strong>TIP</strong>: You MUST open the image on <code>ds9</code> which is the same as the <code>inputs</code> in the <code>PHOT</code>. It is a known bug and may not be fixed in the future.</li>
+</ul>
+<p>If you hit <code>f</code> on a certain star, some kind of radial plot will appear with three vertical lines:</p>
+<p><img src="images/IRAF_PHOT_2.png" width=1000></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The image shows the plot of pixel values (<code>Intensity</code>) with respect to the radial distance from the calculated photocenter of the star near the cursor. In the lower axis, radial distance is shown in pixel units, and upper axis shows the scale units.</p>
+<ul>
+<li><strong>Question</strong>: Why do you think I used aperture <code>~1.5 FWHM</code> ?</li>
+<li><p><strong>Question</strong>: Why do you think I used such annulus? Why can't we use annulus from 4.50 to 12.00, for example in our case?</p>
+</li>
+<li><p><strong>TIP</strong>: You may want to see the x-axis in arcsecond unit. Then, if you knew 1 pixel corresponds to 0.5 arcsec, for example, you could have set <code>scale = 0.5</code> in <code>DATAPARS</code>.</p>
+</li>
+</ul>
+<p>The vertical lines show the aperture and inner/outer edge of the annulus to measure the sky. From the messages shown in the top of the image, you can read centroid result and the sky (depends on <code>salgorithm</code> you selected) statistics:</p>
+<ul>
+<li><code>xc, yc</code>: The result from marginalized centroiding</li>
+<li><code>xerr, yerr</code>: The error of <code>xc, yc</code> after marginalized centroiding. <em>I just guess these are calculated from Gaussian fitting to the marginalized fluxes (projection onto x and y axes)</em></li>
+<li><code>value</code>: The representatice sky value, such as mode, median, mean, etc, depending on <code>salgorithm</code>.</li>
+<li><code>sigma</code>: The sky uncertainty (centered second moment)</li>
+<li><code>skew</code>: The centered third moment (so called skewness)</li>
+<li><code>nsky</code>: The number of sky pixels used to get <code>value, sigma, skew</code> after sigma clipping</li>
+<li><code>nrej</code>: The numver of sky pixels rejected after sigma clipping</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Looking-at-the-Results-of-PHOT">Looking at the Results of <code>PHOT</code><a class="anchor-link" href="#Looking-at-the-Results-of-PHOT">&#182;</a></h3><p>Now you must have a file named <code>filename+.mag.1</code>, and mine is like this:</p>
+
+<pre><code>#N IMAGE               XINIT     YINIT     ID    COORDS                 LID    \
+#U imagename           pixels    pixels    ##    filename               ##     \
+#F %-23s               %-10.3f   %-10.3f   %-6d  %-23s                  %-6d    
+#
+#N XCENTER    YCENTER    XSHIFT  YSHIFT  XERR    YERR            CIER CERROR   \
+#U pixels     pixels     pixels  pixels  pixels  pixels          ##   cerrors  \
+#F %-14.3f    %-11.3f    %-8.3f  %-8.3f  %-8.3f  %-15.3f         %-5d %-9s      
+#
+#N MSKY           STDEV          SSKEW          NSKY   NSREJ     SIER SERROR   \
+#U counts         counts         counts         npix   npix      ##   serrors  \
+#F %-18.7g        %-15.7g        %-15.7g        %-7d   %-9d      %-5d %-9s      
+#
+#N ITIME          XAIRMASS       IFILTER                OTIME                  \
+#U timeunit       number         name                   timeunit               \
+#F %-18.7g        %-15.7g        %-23s                  %-23s                   
+#
+#N RAPERT   SUM           AREA       FLUX          MAG    MERR   PIER PERROR   \
+#U scale    counts        pixels     counts        mag    mag    ##   perrors  \
+#F %-12.2f  %-14.7g       %-11.7g    %-14.7g       %-7.3f %-6.3f %-5d %-9s      
+#
+bf_KCD095628.fits      1067.000  998.000   1     nullfile               0      \
+   1070.161   998.227    3.161   0.227   0.114   0.116          107  BigShift  \
+   0.06422786     0.001279112    7.303506E-4    2118   255      0    NoError   \
+   120.           INDEF          INDEF                  INDEF                  \
+   4.50     58.87154      63.82666   54.77209      25.852 0.080 0    NoError    
+
+</code></pre>
+<p>Because it is too long, I extracted only the last part. The commented lines explains the name of the parameters (<code>N</code>), unit (<code>U</code>), and the format (<code>F</code>). What you will use most frequently are <code>XCENTER</code>, <code>YCENTER</code>, <code>RAPERT</code> (aperture radius), <code>MAG</code> (instrumental magnitude), and <code>MERR</code> (uncertainty in instrumental magnitude).</p>
+<p>I have obtained $ m_{\rm inst} = 25.852 \pm 0.080$!</p>
+<ul>
+<li><strong>TIP</strong>: Although I have said that the small min/max of preprocessed image caused problem for <code>DAOEDIT</code>, you can see that actually they are saved internally and has proper values in the <code>.mag.1</code> file. </li>
+</ul>
+<h3 id="Saving-IRAF-Files-to-Normal-Text:-TXDUMP">Saving IRAF Files to Normal Text: <code>TXDUMP</code><a class="anchor-link" href="#Saving-IRAF-Files-to-Normal-Text:-TXDUMP">&#182;</a></h3><p>Now, it is difficult to read by a human. So IRAF supports a task called <code>TXDUMP</code>, which dumps texts. For example, let me print <code>XCENTER</code> and <code>YCENTER</code>:</p>
+
+<pre><code>--&gt; txdump bf_KCD095628.fits.mag.2 'xcenter, ycenter' yes
+1070.161  998.227
+
+</code></pre>
+<p>You don't <em>have to</em> use capital letters as you can see. <code>yes</code> is actually the answer to verbose option. You can open up the parameter setting by <code>epar txdump</code>. You can save the output as a file as you did in LINUX:</p>
+
+<pre><code>--&gt; txdump bf_KCD095628.fits.mag.2 'xcenter, ycenter, mag, merr' yes &gt; output.txt
+
+</code></pre>
+<p>and <code>output.txt</code> contains only the following numbers:</p>
+
+<pre><code>1070.161  998.227  25.852  0.080
+
+
+</code></pre>
+<ul>
+<li><strong>TIP</strong>: You may worry that this kind of IRAF-specific format of output file cannot be read properly from Python. But <code>astropy</code> has built-in function called <code>ascii</code>, which properly reads these output files even faster, more readible, useful, and fancier than <code>TXDUMP</code>. </li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="9.-For-Your-Future...-DAOFIND">9. For Your Future... <code>DAOFIND</code><a class="anchor-link" href="#9.-For-Your-Future...-DAOFIND">&#182;</a></h2><p>Although I will not teach more on IRAF than this, you may need to learn using IRAF for photometry (even psf photometry) in the future, because many older generation prefers IRAF due to the <em>legacy</em>. I want to put one more information on <code>PHOT</code> task for your future reference and then the <code>DAOFIND</code>.</p>
+<p>In <code>PHOT</code>, you may not want to do all the things interactively since you have 100 images with 2 stars of interest in each image (so that you need 100x2 = 200 interactions for the same xy coordinates). Then what you can do is to save the XY coordinate of the two stars in a file called <code>stars.coo.1</code> and fill <code>coords</code> of "<code>epar PHOT</code>" with this filename. The file may look like:</p>
+
+<pre><code>1312.3 332.2
+132.6 423.6
+
+</code></pre>
+<p>First and second columns are X, Y coordinate of the stars found from <code>DAOEDIT</code> or <code>PHOT</code>.</p>
+<p>What this will do is similar to a mouse-keyboard macro program: load the image, put cursor at the given position, hit certain keys to measure and save magnitudes.</p>
+<p>Now, what if you have 100 images but 100 stars in each image!? Doing <code>DAOEDIT</code> to 100 stars itself is exhausting. Then you can do <a href="http://stsdas.stsci.edu/cgi-bin/gethelp.cgi?daofind"><code>DAOFIND</code></a> or IRAF's own starfinder algorithm, which is not used widely. FYI: Same algorithms are also implemented in Astropy-Photutils, too.</p>
+
+<pre><code>--&gt; epar daofind
+(settings is a simplified version of PHOT, so you can easily understand)
+
+--&gt; daofind
+Task daofind is running...
+
+
+FWHM of features in scale units (3.) (CR or value): 
+    New FWHM of features: 3. scale units  3. pixels
+Standard deviation of background in counts (0.0011) (CR or value): 
+    New standard deviation of background: 0.0011 counts
+Detection threshold in sigma (4.) (CR or value): 
+    New detection threshold: 4. sigma 0.0044 counts
+Minimum good data value (INDEF) (CR or value): 
+    New minimum good data value: INDEF counts
+Maximum good data value (INDEF) (CR or value): 
+    New maximum good data value: INDEF counts
+
+Warning: Image bf_KCD095628.fits  Keyword RONOISE not found.
+
+</code></pre>
+<p>Here, detection threshold is the most important one. If the peak intensity of the fitted star (NOT the peak pixel value, but the peak value of the <strong>fitted</strong> function!) is below the <code>|threshold * skysigma|</code>, they are neglected and not considered as stars.</p>
+<p>After a while, a file with <code>filename.coo.1</code> will be generated with following contents:</p>
+
+<pre><code>#N XCENTER   YCENTER   MAG      SHARPNESS   SROUND      GROUND      ID         \
+#U pixels    pixels    #        #           #           #           #          \
+#F %-13.3f   %-10.3f   %-9.3f   %-12.3f     %-12.3f     %-12.3f     %-6d       \
+#
+   428.683   1.885     -0.704   0.507       -0.730      0.313       1     
+   1336.253  2.638     -1.416   0.728       0.581       0.771       2     
+   1399.732  1.493     -2.154   0.472       -0.726      0.345       3     
+   ......
+
+</code></pre>
+<p>About 20,000 stars are detected in my case.</p>
+<p>Here, <code>sharpness</code>, <code>sround</code>, and <code>ground</code> are the parameters used to determine whether the source is a star-like one or not. They are defined in the <a href="http://adsabs.harvard.edu/abs/1987PASP...99..191S">Stetson 1987</a> paper for the first time. <code>sharpness</code> is a measure of "how sharp the target is", and is kind of "peak value / sky value", roughly speaking. <code>sround</code> and <code>ground</code> are roundness parameters: <code>sround</code> is to measure the roundness based on the symmetric property of the source, and <code>ground</code> is based on the marginalized Gaussian fit to the object.</p>
 
 </div>
 </div>

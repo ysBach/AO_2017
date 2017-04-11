@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head><meta charset="utf-8" />
-<title>04_Ground_Based_Concept</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>06_Preprocessing_with_Python</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 
 <style type="text/css">
@@ -11778,13 +11778,16 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Ground-Based-Observation">Ground Based Observation<a class="anchor-link" href="#Ground-Based-Observation">&#182;</a></h1><p>If you make observations on the ground, the biggest problem is the atmosphere. The atmosphere makes two important problems:</p>
+<h1 id="Preprocessing">Preprocessing<a class="anchor-link" href="#Preprocessing">&#182;</a></h1><p>Now before getting into scientific data analysis, we need <strong>preprocessing</strong>. In IRAF, this was done mainly using <code>IMCOMBINE</code> and <code>IMARITH</code>.</p>
+<p>Similarly, we can do it using an <a href="http://ccdproc.readthedocs.io/en/stable/index.html">Astropy Affiliated package <code>ccdproc</code></a>, or you can make your own module. The name of the package <code>ccdproc</code> roots in the package <code>CCDPROC</code> of IRAF. <code>ccdproc</code> of astropy is basically aimed to deal with all (and even more) tasks that can be done using <code>CCDPROC</code> in IRAF.</p>
+<p>As we cannot believe all the packages to work correctly all the time, even this <code>ccdproc</code>, I generally recommend to make your own package if you want to do advanced works and rely on as small number of packages as possible (e.g., only numpy, scipy, and astropy core packages).</p>
+<p>I will demonstrate preprocessing using <code>spyder</code> IDE and <code>ccdproc</code> package. I also will not use <code>subprocess</code> or <code>os</code> modules of Python, because "interactive" manipulation will be more familiar to people who are used to IRAF. If you are familiar with such modules and want to make one single program which does all the preprocessing at once automatically, you can go ahead! I should encourage such trial.</p>
+<p>The packages or modules used in this tutorial are</p>
 <ul>
-<li>Seeing</li>
-<li>Extinction (= scattering + absorption)</li>
+<li><code>ccdproc.CCDData</code>: If you open fits file using "<code>astropy.io.fits</code>", it will contain header and data, i.e., in an HDUList format. Although this gives much freedom, what we need are only very general data from the HDU: data (pixel values) and unit (ADU). <code>CCDData</code> is a class of such thing used in <code>ccdproc</code>, and it automatically imports only such <em>core information</em> from fits files.</li>
+<li><code>ccdproc.combine</code>: Does similar job as <code>IMCOMBINE</code> of IRAF.</li>
+<li><code>ccdproc.ccd_process</code>: Mainly used when you want to do all preprocessing with one single function. </li>
 </ul>
-<p>In the following, we will explore what seeing and extinction are, and learn how to get the "real" magnitude from instrumental magnitude (called the <strong>standardization</strong> process).</p>
-<p>Finally, I will show you some examples for you to understand how to do the real standardization process.</p>
 <hr>
 
 </div>
@@ -11795,1334 +11798,190 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="1.-Seeing">1. Seeing<a class="anchor-link" href="#1.-Seeing">&#182;</a></h2><p>Seeing is one of the critical problems. You may refer to <a href="http://astro.snu.ac.kr/~jskang/seeing/seeing.html">Here</a> and grasp the meaning of seeing. In this section, we ignore the instrumental seeing, which usually is a low-frequency component.</p>
-<p>Because of the atmospheric seeing, the point source is smoothed from its own "point". The function which describes this spreadness is called the <strong>point spread function</strong>, or just <strong>psf</strong>.</p>
-<p>There are two most widely used psfs: <a href="https://en.wikipedia.org/wiki/Gaussian_function">Gaussian</a> and <a href="https://en.wikipedia.org/wiki/Moffat_distribution">Moffat</a>. The first suggestion of using Moffat profile was made in 1969 by A. F. J. Moffat in <a href="http://adsabs.harvard.edu/cgi-bin/bib_query?bibcode=1969A%26A.....3..455M&amp;db_key=AST">this paper</a>.</p>
-\begin{equation}
-    f_{\rm Gauss}(r) =\frac{1}{\sqrt{2 \pi \sigma^2}} e^{ -(r-r_0)^2/2\sigma^2 } 
-    \qquad f_{\rm Moffat} (r) = A \left [ 1 + \left ( \frac{r-r_0}{R} \right )^2 \right ]^{-\beta}
-\end{equation}<p>Here, $A$ in the Moffat profile is the normalization constant. $r$ and $r_0$ are the distance from the center and the position of the center. By integration, I obtained $ A = \frac{\Gamma(\beta)}{R\sqrt{\pi} \Gamma(\beta-\frac{1}{2})} $ for normalization. The parameter $R$ is called the core width and $\beta$ is called the power. Moffat considered atmospheric turbulence, instrumental abberation, and photographic receiver, which may not fit perfectly to modern devices. Thus, in modern CCD observations, especially those done until 2000s, $\beta$ is usually fixed as 1.5 or 2.5.</p>
-<p>In uniform atmospheric seeing condition, psf should appear symmetric, i.e., isophotal curves should look like a circle. It actually is rarely the case. We encounter elliptical, or even irregularly shaped isophotes. In such
-cases, we have to make elliptical model rotated by certain angle. Those fitting can be done from Astropy, so do not worry too much about how to construct mathermatical formalism. It is enough to know the concept and be able to derive FWHM, HWHM, or so.</p>
-<p>In the following example, I will show you the difference between Gaussian and Moffat in 1-D simple case.</p>
+<h2 id="1.-Shell-and-Python-Scripting">1. Shell and Python Scripting<a class="anchor-link" href="#1.-Shell-and-Python-Scripting">&#182;</a></h2><p>Using spyder, you can use Python for scripting AND LINUX commands. This is because spyder uses IPython as the default console. You can do the same thing using IPython on terminal, but IPython itself is generally not good for scripting, so I generally recommend spyder.</p>
+<p>A good point of using spyder as a terminal is that you can easily move from IRAF to Python, especially if you are too familiar with LINUX.</p>
+<p>For instance, say you have images:</p>
+
+<pre><code>0001.fits    0001b.fits    0001d.fits    0001f.fits
+....
+0010.fits    0010b.fits    0010d.fits    0010f.fits
+
+</code></pre>
+<p>where '<code>b</code>', '<code>d</code>', and '<code>f</code>' mean bias, dark, and flat images, respectively.</p>
+<p>On spyder, you can change the Editor and Console windows by hitting "<code>ctrl+shift+e</code>" and "<code>ctrl+shift+i</code>". You don't have to turn the terminal on via "<code>ctrl+alt+t</code>", but just hit "<code>ctrl+shift+i</code>" and type like this:</p>
+
+<pre><code>In [1]: mkdir bias
+In [2]: mv *b.fits bias/
+In [3]: cd bias/
+In [4]: ls *.fits &gt; bias.list
+In [5]: cd ..
+
+In [6]: mkdir dark
+In [7]: mv *d.fits dark/
+In [8]: cd dark/
+In [9]: ls *.fits &gt; dark.list
+In [10]: cd ..
+
+In [11]: mkdir flat
+In [12]: mv *f.fits flat/
+In [13]: cd flat/
+In [14]: ls *.fits &gt; flat.list
+In [15]: cd ..
+
+In [16]: mkdir object
+In [17]: mv *.fits object/
+In [18]: cd object/
+In [19]: ls *.fits &gt; object.list
+In [20]: cat object.list
+    0001.fits
+    ....
+    0010.fits
+# You can do "cat bias.list" to see the contents in "bias.list"
+# See the figure included below.
+
+
+</code></pre>
+<p>Then you have a file '<code>bias.list</code>' in the directory '<code>bias</code>', with all the 10 bias images, etc. A part of an example:</p>
+<p><img src='images/spyder_01.png' width=300></p>
+<ul>
+<li><strong>TIP</strong>: You now may know, but there are many useful shortcuts in spyder:<ul>
+<li><code>F9</code>: run the current line (identical to copy the line, paste it on console, and hit enter)</li>
+<li>Using "<code>#%%</code>": making a "cell". Spyder will automatically highlight the cell you are in. If you hit <code>ctrl+enter</code>,  all the lines in the current cell will be run (same as drag lines and hit <code>F9</code>) while the cursor remains the position. If you hit <code>shift+enter</code>, the cursor will evolve to the next cell so that you can run the next cell again by hitting <code>shift+enter</code>.</li>
+<li><code>ctrl+1</code>: Comment the lines you selected. I changed it to <code>ctrl+/</code>, which is more widely used such as in <code>Atom</code>.</li>
+<li><code>ctrl+4</code>: Make a comment box. Try it!</li>
+</ul>
+</li>
+</ul>
+<hr>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="2.-Image-Combine">2. Image Combine<a class="anchor-link" href="#2.-Image-Combine">&#182;</a></h2><p>You now must be familiar with the concept of image combine and the necessasity of it.</p>
+<p>I will open the <code>bias.list</code> file using <code>NumPy</code> and median combine the bias images using <code>ccdproc</code>:</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">astropy.modeling.functional_models</span> <span class="k">import</span> <span class="n">Moffat1D</span><span class="p">,</span> <span class="n">Gaussian1D</span>
-<span class="kn">from</span> <span class="nn">scipy.special</span> <span class="k">import</span> <span class="n">gamma</span> <span class="k">as</span> <span class="n">G</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">ccdproc</span> <span class="k">import</span> <span class="n">combine</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
 
-<span class="k">def</span> <span class="nf">norm_gauss</span><span class="p">(</span><span class="n">sigma</span><span class="p">):</span>
-    <span class="k">return</span> <span class="mi">1</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">sigma</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">filelist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s1">&#39;bias.list&#39;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bytes</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">norm_moffat</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">power</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">G</span><span class="p">(</span><span class="n">power</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">width</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="n">G</span><span class="p">(</span><span class="n">power</span> <span class="o">-</span> <span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">))</span>
-
-<span class="k">def</span> <span class="nf">HWHM_moffat</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">power</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">width</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">power</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-
-<span class="n">x</span>       <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mf">0.1</span><span class="p">)</span>
-<span class="n">sigma</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
-<span class="n">width</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
-<span class="n">power</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">])</span>
-
-
-<span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">ax2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sigma</span><span class="p">:</span>
-    <span class="n">gauss</span>  <span class="o">=</span> <span class="n">Gaussian1D</span><span class="p">(</span><span class="n">amplitude</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">mean</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stddev</span><span class="o">=</span><span class="n">s</span><span class="p">)</span>    
-    <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">norm_gauss</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">*</span><span class="n">gauss</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> 
-             <span class="n">label</span><span class="o">=</span><span class="s2">&quot;sigma=</span><span class="si">{0:.0f}</span><span class="s2">, HWHM=</span><span class="si">{1:.1f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="mf">2.355</span><span class="o">*</span><span class="n">s</span><span class="o">/</span><span class="mi">2</span><span class="p">))</span>
-    <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">norm_gauss</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">*</span><span class="n">gauss</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> 
-             <span class="n">label</span><span class="o">=</span><span class="s2">&quot;sigma=</span><span class="si">{0:.0f}</span><span class="s2">, HWHM=</span><span class="si">{1:.1f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="mf">2.355</span><span class="o">*</span><span class="n">s</span><span class="o">/</span><span class="mi">2</span><span class="p">))</span>
-
-<span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">width</span><span class="p">:</span>
-    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">power</span><span class="p">:</span>
-        <span class="n">moffat</span> <span class="o">=</span> <span class="n">Moffat1D</span><span class="p">(</span><span class="n">amplitude</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">x_0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="n">w</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">p</span><span class="p">)</span>
-        <span class="n">HWHM</span>   <span class="o">=</span> <span class="n">HWHM_moffat</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
-        <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">norm_moffat</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="o">*</span> <span class="n">moffat</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-                 <span class="n">label</span><span class="o">=</span><span class="s1">&#39;w=</span><span class="si">{0:.0f}</span><span class="s1">, p=</span><span class="si">{1:.1f}</span><span class="s1">, HWHM=</span><span class="si">{2:.1f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">HWHM</span><span class="p">))</span>
-        <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">norm_moffat</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="o">*</span> <span class="n">moffat</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-                 <span class="n">label</span><span class="o">=</span><span class="s1">&#39;width=</span><span class="si">{0:.0f}</span><span class="s1">, power=</span><span class="si">{1:.1f}</span><span class="s1">, HWHM=</span><span class="si">{2:.1f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">HWHM</span><span class="p">))</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">ls</span><span class="o">=</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">ls</span><span class="o">=</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;log scale = magnitude scale&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.02</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">bias</span> <span class="o">=</span> <span class="n">combine</span><span class="p">(</span><span class="n">filelist</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>       <span class="c1"># ccdproc does not accept numpy.ndarray, but only python list.</span>
+               <span class="n">output_file</span><span class="o">=</span><span class="s1">&#39;bias.fits&#39;</span><span class="p">,</span> <span class="c1"># I want to save the combined image</span>
+               <span class="n">method</span><span class="o">=</span><span class="s1">&#39;median&#39;</span><span class="p">,</span>         <span class="c1"># default is average so I specified median.</span>
+               <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;adu&#39;</span><span class="p">)</span>              <span class="c1"># unit is required: it&#39;s ADU in our case.</span>
 </pre></div>
 
 </div>
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-<div class="prompt"></div>
-
-
-
-<div class="output_png output_subarea ">
-<img src="data:image/png;base64,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
-RU5ErkJggg==
-"
->
-</div>
-
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Moffat describes in his 1969 paper that</p>
-<blockquote><p>Two-dimensional intensity profiles of focal stellar images in photographic emulsions were derived by convolving gaussian seeing distributions with diffraction proffles and emulsion scattering functions. <strong>The results predict too low an intensity for large radial distances from the centre of the image</strong>, contradicting the assumption that seeing is gaussian.</p>
+<p>At each line, I put comments. That's it! 
+You succeeded in making a master bias as you did in IRAF by</p>
+
+<pre><code>imcombine *b.fits bias.fits combine='median'
+
+</code></pre>
+<p>One thing different from IRAF is that you cannot use command like "<code>*.fits</code>".</p>
+<p>Of course there are more options like rejection, etc. See the <a href="http://ccdproc.readthedocs.io/en/stable/api/ccdproc.combine.html#ccdproc.combine">manual</a>.</p>
+<hr>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="3.-Dealing-with-Dark-Current">3. Dealing with Dark Current<a class="anchor-link" href="#3.-Dealing-with-Dark-Current">&#182;</a></h2><blockquote><p>Although dark current is negligible in many modern optical instruments (only few electrons per pixel per 1 minute), I put this section for educational purpose.</p>
 </blockquote>
-<p>He noted that the stellar profile is too bright than the good-fitted Gaussian at larger radius, and this contradicts with the old assumption that seeing profile is Gaussian. This can be seen from the above figure I drew. Compare blue dotted (Gauss) and red solid lines (Moffat). The HWHMs are 1.2 and 1.1, so you may expect the latter to have more "concentrated" profile. But at radius larger than about 1.5, latter becomes larger.</p>
-<p>This means the Gaussian fitting may not always be a good choice, especially in the presence of atmosphere.</p>
+<p>Since dark current is linear function of time (since dark noise is Poisson process), we must make dark image as a function of time. If the dark image for exposure time <code>t</code> seconds is <code>dark(t)</code>, what we do is like this:</p>
+
+<pre><code>dark(1) = (dark(t) - bias)/t
+
+</code></pre>
+<p>Then if the object image has exposure time of <code>t'</code>, we multiply <code>dark(1)</code> by <code>t'</code> and use it as "master dark". Because of this, we need to save the exposure time with dark images.</p>
+<p>Go to a directory where dark images are in (e.g., <code>cd ../dark</code>).</p>
+<p>I want to do:</p>
 <ul>
-<li><strong>Question</strong>: Why do you think I let the abscissa to be in a logarithmic scale? Can you guess what the $\log_{10}$ of stellar profile means?</li>
+<li>median combine all dark frames, save it as "dark0.fits"</li>
+<li>subtract master bias</li>
+<li>3-sigma clip with 10 iterations <ul>
+<li>IRAF does 3-sigma with 50 iterations by default.</li>
 </ul>
-<hr>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="2.-Extinction">2. Extinction<a class="anchor-link" href="#2.-Extinction">&#182;</a></h2><p>Because of the atmosphere, stellar flux diminishes because of <strong>absorption</strong> and <strong>scattering</strong>. It is mainly because of the change in weather; the same star can appear to have different flux every time, even though the exposure time and instruments are exactly the same. This of course depends on the thickness of atmosphere in the line of sight. More complicated issue is that this extinction is also a function of wavelength, so you have to apply different extinction factor for different filters, <em>in principle</em>.</p>
-<h3 id="2.1.-Atmospheric-Extinction">2.1. Atmospheric Extinction<a class="anchor-link" href="#2.1.-Atmospheric-Extinction">&#182;</a></h3><p>Under parallel uniform atmosphere assumption, the flux diminishes by a factor of $e^{-\tau}$, where $\tau$ is the optical depth. In magnitude system, i.e., the logarithmic scale, this means the increase in magnitude is proportional to the airmass, $X = \sec(z)$:</p>
-\begin{equation}
-    m(X) = m_0 + k_X X
-\end{equation}<p>where $m$ is the observed magnitude, $m_0$ is the magnitude if it were not for the atmosphere, and $k_X$ is a constant called the <em>extinction coefficient</em>.</p>
-<h3 id="2.2.-Wavelength-Dependence">2.2. Wavelength Dependence<a class="anchor-link" href="#2.2.-Wavelength-Dependence">&#182;</a></h3><p>It is natural that the extinction, which include absorption and scattering, depends on wavelength. In <a href="https://en.wikipedia.org/wiki/Rayleigh_scattering">Rayleigh regime</a>, i.e., when wavelength is much longer than particles ($x \ll \lambda$ where $x$ is the size parameter), the extinction is approximately proportional to $\lambda^{-4}$. So shorter wavelength must have larger $k_X$ value, which means it suffers more extinction from atmosphere.</p>
-<blockquote><p>$k_X$ is actually a wavelength dependent one ($k_{X, \lambda}$). Typical values are</p>
-<ul>
-<li>0.4 in U-band</li>
-<li>0.2 in B-band</li>
-<li>0.1 in V-band</li>
+</li>
+<li>set the rejected pixel values as the median value</li>
+<li>save it as "dark.fits"</li>
 </ul>
-</blockquote>
-<p>In broad-band observation, the word "wavelength" can be substituted by "filter". For example, if we want the V band magnitude, we need to find coefficients $a$ and $k_{XC}$ from</p>
-\begin{equation}
-    m_V = m_{V, 0} + k_{X, V} X + a({\rm B}-{\rm V}) + k_{XC, V} X ({\rm B}-{\rm V}) ~.
-\end{equation}<p>You can use U, R, I, or any other bands instead of B, but I used B which is conventional. The subscript C in $k_{XC}$ means "color".</p>
-<p>Fortunately, $a$ is very small ($|a| \lesssim 0.1$), and $k_{\rm XC}$ is nearly zero for most instances. Considering B-V color is usually less than unity, you can see that the color terms (the third and the fourth term) will be very negligible. Especially the introduction of $k_{XC}$ increases the uncertainty in many cases, so it is not usually used unless the sky is very clear.</p>
-<blockquote><p>The color dependent terms ($k_{XC, V}$ and even $a$) is not very useful unless you need very precise determination.</p>
-</blockquote>
-<hr>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="3.-Zero-point">3. Zero-point<a class="anchor-link" href="#3.-Zero-point">&#182;</a></h2><p>What we will calculate from program or software is just $m_{\rm inst} = 2.5 \log_{10} ({\rm photon~count~per~1s})$ (the <strong>instrumental magnitude</strong>). In such cases, even the Moon may appear to have magnitude of only 10-mag or so, which is non-sensical. The normalization to photon count can be done by subtracting certain value from instrumental magnitude, which is mathematically identical to the normalization using 0-mag star (think about Pogson's formula).</p>
-<p>The correction to this kind of problem is done by <strong>zeropoint</strong> magnitude. If the zeropoint is denoted as $m_z$, we get the real magnitude as $m = m_{\rm inst} - m_z$.</p>
-<hr>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="4.-Standardization">4. Standardization<a class="anchor-link" href="#4.-Standardization">&#182;</a></h2><h3 id="4.1.-Idea">4.1. Idea<a class="anchor-link" href="#4.1.-Idea">&#182;</a></h3><p>Combining the zeropoint correction and extinction correction and ignore the color terms, we get</p>
-\begin{equation}
-    m_{0, V} = m_{{\rm inst}, V} - m_{z, V} - k_{X, V} X \quad( - {\rm color~correction~terms})~,
-\end{equation}<p>or more frequently, changing $m_{0, V} $ to $V$, $m_{{\rm inst}, V}$ to $v$, etc,</p>
-\begin{equation}
-    v - V = z_{V} + k_{V} X \quad( + {\rm color~correction~terms})~,
-\end{equation}<p>for V-band, as an example. Conventionally people use upper case for the actual (apparent) magnitude and lower case for instrumental (apparent) magnitude.</p>
-<p>This process, <em>transforming the instrumental magnitude to the "real" magnitude</em>, is called the <strong>standardization</strong>.</p>
-<h3 id="4.2.-Standardization-in-Practice">4.2. Standardization in Practice<a class="anchor-link" href="#4.2.-Standardization-in-Practice">&#182;</a></h3><p>Now, how do we get $m_z$ and $k_X$? What we know is only $X$ and what we can calculate is only $m_{\rm inst}$! Fortunately, we have some stars which have very accurately known $m_0$ values. These are called the <strong>standard stars</strong>. Some famous ones are <strong>Landolt standard stars</strong>.</p>
-<p>So the strategy is clear: Take images of standard stars at different airmasses, at nearly identical sky conditions. Plot $m_{\rm inst} - m_0$ VS $X$, and the slope and intercept will be $k_X$ and $m_z$, respectively. This is only true when we neglect the wavelength (or color) dependency of extinction. Note that these two depends on sky condition, i.e., <strong>these should be determined at each night</strong>, in principle.</p>
-<p>The easiest case occurs if the targets of interst are at almost identical zenith distance (i.e., constant $X$). Observation on bright star clusters are such cases. Then we can regard $k_X X$ as a constant, and set it as part of $m_z$, so $ m_0 = m_{\rm inst} - m_z' $.</p>
-<hr>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Example-1:-Calculating-Instrumental-Magnitude-and-Color">Example 1: Calculating Instrumental Magnitude and Color<a class="anchor-link" href="#Example-1:-Calculating-Instrumental-Magnitude-and-Color">&#182;</a></h2><p>Consider you have obtained images of two objects and three standard stars. (I have obtained these data from the tutorial examples of a class which I took in 2016, and the data are not very realistic, but good enough to use for our example, so I adopted)</p>
-<p>Each of the standard stars was taken at three different airmasses, named <code>X</code>: 1.0, 1.3, and 2.0. The exposure time in V and B bands are <code>T_B</code> and <code>T_V</code>. The photon counts are given in <code>count_V</code> and <code>count_B</code>. Say the gain value <code>gain=1.0</code> and ignore the readout noise. Also assume the sky conditions were prefectly good during the observation.</p>
-<blockquote><p><strong>How can we calculate the magnitudes, colors, and their uncertainties?</strong></p>
-</blockquote>
-<p>For brevity, I will use lower cased letters, <code>b</code> and <code>v</code> for the <em>instrumental</em> magnitudes, and <code>B</code>, <code>V</code> for the <em>real (literature)</em> magnitudes.</p>
-<p>Let me first load and show you the data:</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">astropy.io.ascii</span> <span class="k">import</span> <span class="n">read</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="s1">&#39;Ground_Based_Tutorial/data_0.dat&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
-<span class="n">data</span><span class="o">.</span><span class="n">pprint</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-<div class="prompt"></div>
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>&lt;class &#39;astropy.table.table.Table&#39;&gt;
-</pre>
-</div>
-</div>
-
-<div class="output_area">
-<div class="prompt output_prompt">Out[2]:</div>
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>&lt;bound method Table.pprint of &lt;Table length=11&gt;
-Target    X     T_V   T_B  count_V  count_B 
- str4  float64 int64 int64  int64    int64  
------- ------- ----- ----- -------- --------
-  obj1     1.2    15    30  8695591 14211249
-  obj2     1.4   200   400   180181   112201
-  std1     1.0     5    10 12687301 22438244
-  std2     1.0     5    10  5534312  7521077
-  std3     1.0     5    10  2280320  1835230
-  std1     1.3     7    12 14711983 25343232
-  std2     1.3     7    12  6404748  8489650
-  std3     1.3     7    12  2638025  2060068
-  std1     2.0     9    15 15845201 25669738
-  std2     2.0     9    15  6885820  8636456
-  std3     2.0     9    15  2796503  2042511&gt;</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>If you want further information of astropy tables, see <a href="http://docs.astropy.org/en/stable/table/">this manual page</a>.</p>
-<p>To calculate the instrumental magnitude, you have to calculate</p>
-\begin{equation}
-    m_{\rm inst} \equiv -2.5 \log_{10}\left ( \frac{N}{\Delta t} \right ) ~.
-\end{equation}<p>$m_{\rm inst}$ equals to <code>b</code> or <code>v</code>, $N$ ("count") is the column named <code>count_V</code> or <code>count_B</code>, and $\Delta t$ (exposure time in seconds) is the one named <code>T_V</code> or <code>T_B</code>, depending on the filters you are interested in. For the uncertainties, only the Poissonian error of stellar flux matters <em>if dark and readout noise are ignored, and sky noise is negligible to that of the stellar flux and perfectly constant </em>. Then $\Delta N = \sqrt{N}$, so</p>
-\begin{align}
-    \Delta m_{\rm inst} &\approx \left | \frac{\partial m_{\rm inst}}{\partial n} \Delta N \right | \\
-            &= \frac{2.5}{\log 10} \frac{\Delta N}{N} \\
-            &= \frac{1.0857}{\sqrt{N}} ~.
-\end{align}<p>The (instrumental) B-V color can be obtained easily by subtracting the instrumental magnitudes <code>v</code> from <code>b</code>. The uncertainty of color is, by assuming there is no correlation between <code>b</code> and <code>v</code> magnitudes, $\Delta {\rm color} = \sqrt{\Delta v^2 + \Delta b^2}$.</p>
-<ul>
-<li><strong>Question</strong>: What if the sky value is constant but not zero? Can you guess the mathematical form of $\Delta N$?</li>
-<li><p><strong>Question</strong>: What if the sky value has average of 0 but has fluctuation (so called standard deviation)? Can you guess the mathematical form of $\Delta N$?</p>
-</li>
-<li><p><strong>TIP</strong>: Say</p>
-<ul>
-<li>$m_s$: sky (mean, median, mode, or any other representative one) (ADU/pixel), </li>
-<li>$\sigma_s$: sky standard deviation (will be calculated in unit electrons/pixel),</li>
-<li>$g$: (effective) electron gain (electrons/ADU),</li>
-<li>$R$: readout noise (electrons/pixel),</li>
-<li>$N_{\rm tot}$: total count inside the aperture (including sky) (ADU),</li>
-<li>$n_a$: number of pixels used as the aperture (pixel),</li>
-<li>$n_s$: number of pixels used as sky (sky estimation) (pixel)</li>
-</ul>
-<p>(In our case, I assumed $N_{\rm tot} \gg m_s$, $\sigma_s=0$, $g=1$, and $R=0$). 
-Note that $\sigma_s$ is calculated <em>before</em> we calculate the stellar magnitude. Hence, it should include the uncertainty due to the readout noise!</p>
-<p>Then the magnitude uncertainty is usually calculated as</p>
-</li>
-</ul>
-\begin{align}
-    \Delta m_{\rm inst} &= 1.0857 \frac{\Delta N}{N}\\
-        &\approx 1.0857 \frac{\sqrt{N_{\rm tot} g
-                        + n_a \sigma_s^2 
-                        + \frac{n_a^2 \sigma_s^2}{n_s} }}
-                {(N_{\rm tot} - n_s m_s)g}\\
-        &= 1.0857 \frac{\sqrt{ \frac{N_{\rm tot} }{g}
-                        + n_a (\frac{\sigma_s}{g})^2 
-                        + \frac{n_a^2 (\sigma_s/g)^2}{n_s} }}
-                {N_{\rm tot} - n_s m_s}  ~,\\
-    \sigma_s &= m_s g + R^2 \quad({\rm Poissonian~+~Gaussian})
-\end{align}<ul>
-<li><p><strong>TIP</strong>: For a <em>very accurate</em> error analysis, see Merline &amp; Howell 1995 (Experimental Astronomy, <strong>6</strong>, <em>163</em>)</p>
-</li>
-<li><p><strong>Question</strong>: If several images are combined by summing, averaging, or medianing to make one image, it means we have more <em>information</em> in that single image, and thus our intuition says that the uncertainty ($\Delta N/N$) should become smaller. Which parameters do you think will be changed to diminish $\Delta N/N$ ?</p>
-</li>
-</ul>
-<p>To calculate these, let me use the <code>Astropy.Table</code>, which is a kind of variants of <code>numpy.ndarray</code>:</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">astropy.io.ascii</span> <span class="k">import</span> <span class="n">read</span>
-<span class="kn">from</span> <span class="nn">astropy</span> <span class="k">import</span> <span class="n">table</span>
+<span class="kn">from</span> <span class="nn">astropy.stats</span> <span class="k">import</span> <span class="n">sigma_clip</span>
+<span class="kn">from</span> <span class="nn">ccdproc</span> <span class="k">import</span> <span class="n">CCDData</span><span class="p">,</span> <span class="n">ccd_process</span><span class="p">,</span> <span class="n">combine</span>
 
-<span class="c1"># b, v, c means instrumental B, V magnitudes and instrumental B-V color.</span>
-<span class="n">v</span>  <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;v&#39;</span> <span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="o">-</span><span class="mf">2.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;count_V&#39;</span><span class="p">]</span><span class="o">/</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;T_V&#39;</span><span class="p">]))</span>
-<span class="n">b</span>  <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;b&#39;</span> <span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="o">-</span><span class="mf">2.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;count_B&#39;</span><span class="p">]</span><span class="o">/</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;T_B&#39;</span><span class="p">]))</span>
-<span class="n">dv</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;dv&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="mf">1.0857</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;count_V&#39;</span><span class="p">]))</span>
-<span class="n">db</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;db&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="mf">1.0857</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;count_B&#39;</span><span class="p">]))</span>
+<span class="c1"># cd ../dark</span>
 
-<span class="n">c</span>  <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;color&#39;</span> <span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">b</span><span class="o">-</span><span class="n">v</span><span class="p">)</span>
-<span class="n">dc</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;dcolor&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">db</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">dv</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="p">)</span>
+<span class="n">filelist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s1">&#39;dark.list&#39;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bytes</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
 
-<span class="c1"># Only save upto 3 or 5 decimal points</span>
-<span class="n">v</span><span class="o">.</span><span class="n">format</span>  <span class="o">=</span><span class="s1">&#39;</span><span class="si">%6.3f</span><span class="s1">&#39;</span>
-<span class="n">b</span><span class="o">.</span><span class="n">format</span>  <span class="o">=</span><span class="s1">&#39;</span><span class="si">%6.3f</span><span class="s1">&#39;</span>
-<span class="n">c</span><span class="o">.</span><span class="n">format</span>  <span class="o">=</span><span class="s1">&#39;</span><span class="si">%6.3f</span><span class="s1">&#39;</span>
-<span class="n">dv</span><span class="o">.</span><span class="n">format</span> <span class="o">=</span><span class="s1">&#39;</span><span class="si">%6.5f</span><span class="s1">&#39;</span>
-<span class="n">db</span><span class="o">.</span><span class="n">format</span> <span class="o">=</span><span class="s1">&#39;</span><span class="si">%6.5f</span><span class="s1">&#39;</span>
-<span class="n">dc</span><span class="o">.</span><span class="n">format</span> <span class="o">=</span><span class="s1">&#39;</span><span class="si">%6.5f</span><span class="s1">&#39;</span>
+<span class="n">dark0</span> <span class="o">=</span> <span class="n">combine</span><span class="p">(</span><span class="n">filelist</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>        <span class="c1"># ccdproc does not accept numpy.ndarray, but only python list.</span>
+                <span class="n">output_file</span><span class="o">=</span><span class="s1">&#39;dark0.fits&#39;</span><span class="p">,</span> <span class="c1"># I want to save the combined image</span>
+                <span class="n">method</span><span class="o">=</span><span class="s1">&#39;median&#39;</span><span class="p">,</span>          <span class="c1"># default is average so I specified median.</span>
+                <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;adu&#39;</span><span class="p">)</span>               <span class="c1"># unit is required: it&#39;s ADU in our case.</span>
 
-<span class="n">data</span><span class="o">.</span><span class="n">add_columns</span><span class="p">([</span><span class="n">v</span><span class="p">,</span> <span class="n">dv</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">db</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">dc</span><span class="p">])</span>
+<span class="c1"># This dark isn&#39;t bias subtracted yet, so let&#39;s subtract bias:               </span>
 
-<span class="c1"># To be more visual, I will &quot;sort&quot; with respect to the column &#39;Target&#39;:</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">group_by</span><span class="p">(</span><span class="s1">&#39;Target&#39;</span><span class="p">)</span> 
+<span class="c1"># (1) Open master bias</span>
+<span class="n">bias</span> <span class="o">=</span> <span class="n">CCDData</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;../bias/bias.fits&#39;</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;adu&#39;</span><span class="p">)</span>
+<span class="c1"># `unit=&#39;adu&#39;` does not necessarily be set if you have header keyword for it.</span>
 
-<span class="c1"># Then print:</span>
-<span class="n">data</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">max_width</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>  <span class="c1"># max_width is used to print out all the values</span>
+<span class="c1"># (2) Subtract bias:</span>
+<span class="n">dark</span> <span class="o">=</span> <span class="n">ccd_process</span><span class="p">(</span><span class="n">dark0</span><span class="p">,</span> <span class="n">master_bias</span><span class="o">=</span><span class="n">bias</span><span class="p">)</span> 
+<span class="c1"># This automatically does &quot;dark-bias&quot;</span>
+<span class="c1"># You can do it by the function &quot;subtract_bias&quot;, or just normal pythonic arithmetic.</span>
+
+<span class="c1"># (3) Sigma clip the dark</span>
+<span class="n">dark_clip</span> <span class="o">=</span> <span class="n">sigma_clip</span><span class="p">(</span><span class="n">dark</span><span class="p">)</span> 
+<span class="c1"># by default, astropy.stats.sigma_clip does &quot;3-sigma, 10-iterations&quot; clipping.</span>
+<span class="c1"># You can tune the parameters by optional keywords (e.g., sigma, iters, ...).</span>
+<span class="c1"># dark_clip is &quot;numpy masked array&quot;. It contains data, mask, and filled_value.</span>
+<span class="c1"># filled_value is the value which is used to fill the data which are masked (rejected).</span>
+<span class="c1"># I will change filled_value to be the median value.</span>
+
+<span class="c1"># (4) For rejected pixels, insert the median value</span>
+<span class="n">dark_clip</span><span class="o">.</span><span class="n">fill_value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">dark_clip</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> 
+<span class="n">dark</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">dark_clip</span><span class="o">.</span><span class="n">filled</span><span class="p">()</span> <span class="c1"># ~.filled() gives the &quot;data array using filled_value&quot;</span>
+
+<span class="c1"># (5) Save</span>
+<span class="n">dark</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;dark.fits&#39;</span><span class="p">)</span>
 </pre></div>
 
 </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-<div class="prompt"></div>
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Target  X  T_V T_B count_V  count_B     v       dv      b       db   color   dcolor
------- --- --- --- -------- -------- ------- ------- ------- ------- ------ -------
-  obj1 1.2  15  30  8695591 14211249 -14.408 0.00037 -14.189 0.00029  0.219 0.00047
-  obj2 1.4 200 400   180181   112201  -7.387 0.00256  -6.120 0.00324  1.267 0.00413
-  std1 1.0   5  10 12687301 22438244 -16.011 0.00030 -15.877 0.00023  0.134 0.00038
-  std1 1.3   7  12 14711983 25343232 -15.806 0.00028 -15.812 0.00022 -0.005 0.00036
-  std1 2.0   9  15 15845201 25669738 -15.614 0.00027 -15.583 0.00021  0.031 0.00035
-  std2 1.0   5  10  5534312  7521077 -15.110 0.00046 -14.691 0.00040  0.420 0.00061
-  std2 1.3   7  12  6404748  8489650 -14.904 0.00043 -14.624 0.00037  0.279 0.00057
-  std2 2.0   9  15  6885820  8636456 -14.709 0.00041 -14.401 0.00037  0.309 0.00055
-  std3 1.0   5  10  2280320  1835230 -14.148 0.00072 -13.159 0.00080  0.988 0.00108
-  std3 1.3   7  12  2638025  2060068 -13.940 0.00067 -13.087 0.00076  0.854 0.00101
-  std3 2.0   9  15  2796503  2042511 -13.731 0.00065 -12.835 0.00076  0.896 0.00100
-</pre>
-</div>
-</div>
-
 </div>
 </div>
 
@@ -13132,661 +11991,64 @@ Note that $\sigma_s$ is calculated <em>before</em> we calculate the stellar magn
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p>As you can see from the dark image, the value is very small. It's only about less than 10 counts (ADU) per 30 seconds, which means less than 1 ADU per second. In better telescopes, dark is extremely small, so you can safely ignore dark (i.e., assume dark current = 0 adu).</p>
 <hr>
-<h2 id="Example-2:-Merge-Literature-Data">Example 2: Merge Literature Data<a class="anchor-link" href="#Example-2:-Merge-Literature-Data">&#182;</a></h2><p>Because the standard stars are the "standard" stars, we know their accurately measured B and V magnitudes, and thus the colors. For simplicity, let me assume these literature values are exact, and thus no uncertainty is there.</p>
-<blockquote><p><strong> Let me show you how the instrumental magnitudes differ from the literature values. </strong></p>
-</blockquote>
-<p>The literature values are given as:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="3.-Dealing-with-Flat">3. Dealing with Flat<a class="anchor-link" href="#3.-Dealing-with-Flat">&#182;</a></h2><p>Now we have to subtract bias and dark from flat. Go to the flat directory (e.g., "<code>cd ../flat/</code>). I want to do the followings similar to dark:</p>
+<ul>
+<li>median combine all flat frames, save it as "flat0.fits"</li>
+<li>subtract master bias and dark (dark should be scaled)</li>
+<li>save it as "flat.fits"</li>
+</ul>
+<p>Because flat has spatial variation, I cannot replace the rejected pixel values with median of all pixels! It's customary to set a lower limit of pixel value (<code>min_value</code>) and replace pixel values smaller than this value: Change pixels smaller than <code>min_value</code> to <code>min_value</code>. This will be done later, but of course you an do it at this stage if you wish to.</p>
+<p>As I said in the previous section, dark frame should be "scaled" so that it gives correct (estimated) dark current value for given exposure time: <code>dark(t)/t * t'</code>. This is automatically done if you set the option "<code>dark_scale</code>" from the fucntion <code>ccd_process</code>.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">astropy.io.ascii</span> <span class="k">import</span> <span class="n">read</span>
-<span class="n">std</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="s1">&#39;Ground_Based_Tutorial/data_std.dat&#39;</span><span class="p">)</span>
-<span class="n">std</span><span class="o">.</span><span class="n">pprint</span>
+<span class="kn">from</span> <span class="nn">ccdproc</span> <span class="k">import</span> <span class="n">CCDData</span><span class="p">,</span> <span class="n">ccd_process</span><span class="p">,</span> <span class="n">combine</span>
+<span class="kn">import</span> <span class="nn">astropy.units</span> <span class="k">as</span> <span class="nn">u</span>
+
+<span class="c1"># cd ../flat</span>
+
+<span class="n">filelist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s1">&#39;flat.list&#39;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bytes</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+
+<span class="n">flat0</span> <span class="o">=</span> <span class="n">combine</span><span class="p">(</span><span class="n">filelist</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>        <span class="c1"># ccdproc does not accept numpy.ndarray, but only python list.</span>
+                <span class="n">output_file</span><span class="o">=</span><span class="s1">&#39;flat0.fits&#39;</span><span class="p">,</span> <span class="c1"># I want to save the combined image</span>
+                <span class="n">method</span><span class="o">=</span><span class="s1">&#39;median&#39;</span><span class="p">,</span>          <span class="c1"># default is average so I specified median.</span>
+                <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;adu&#39;</span><span class="p">)</span>               <span class="c1"># unit is required: it&#39;s ADU in our case.</span>
+
+<span class="c1">#%%</span>
+<span class="c1"># (1) Open master bias and dark</span>
+<span class="n">bias</span> <span class="o">=</span> <span class="n">CCDData</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;../bias/bias.fits&#39;</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;adu&#39;</span><span class="p">)</span>
+<span class="n">dark</span> <span class="o">=</span> <span class="n">CCDData</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;../dark/dark.fits&#39;</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;adu&#39;</span><span class="p">)</span>
+
+<span class="c1"># (2) Subtract bias and dark</span>
+<span class="n">flat</span> <span class="o">=</span> <span class="n">ccd_process</span><span class="p">(</span><span class="n">flat0</span><span class="p">,</span>                  <span class="c1"># The input image (median combined flat)</span>
+                   <span class="n">master_bias</span><span class="o">=</span><span class="n">bias</span><span class="p">,</span>       <span class="c1"># Master bias</span>
+                   <span class="n">dark_frame</span><span class="o">=</span><span class="n">dark</span><span class="p">,</span>        <span class="c1"># dark</span>
+                   <span class="n">dark_exposure</span><span class="o">=</span><span class="mi">30</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="c1"># exposure time of dark</span>
+                   <span class="n">data_exposure</span><span class="o">=</span><span class="mi">1</span>  <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="c1"># exposure time of input image (flat)</span>
+                   <span class="n">dark_scale</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>        <span class="c1"># whether to scale dark frame</span>
+<span class="c1"># (3) Save</span>
+<span class="n">flat</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;flat.fits&#39;</span><span class="p">)</span>
 </pre></div>
 
 </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-<div class="prompt output_prompt">Out[4]:</div>
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>&lt;bound method Table.pprint of &lt;Table length=3&gt;
-Target    V     COLOR     B   
- str4  float64 float64 float64
------- ------- ------- -------
-  std1     9.1    -0.3     8.8
-  std2    10.0     0.0    10.0
-  std3    11.0     0.6    11.6&gt;</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Now let me 'join' the literature value to the observed data, only for standard stars for standardization:</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data_std</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">std</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="s1">&#39;Target&#39;</span><span class="p">)</span>
-<span class="c1"># Joins two tables, data and std, based on the column &#39;Target&#39;.</span>
-<span class="c1"># Columns with name &#39;obj1&#39; and &#39;obj2&#39; does not exist in table std,</span>
-<span class="c1"># so those rows will be deleted.</span>
-<span class="n">data_std</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">max_width</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Plot of literature VS instrumental magnitudes&#39;</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data_std</span><span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">],</span> <span class="n">data_std</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">mfc</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;B&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data_std</span><span class="p">[</span><span class="s1">&#39;V&#39;</span><span class="p">],</span> <span class="n">data_std</span><span class="p">[</span><span class="s1">&#39;v&#39;</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;+&#39;</span><span class="p">,</span> <span class="n">mfc</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;V&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Literature magnitude&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Instrumental magnitude&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">ls</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-<div class="prompt"></div>
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Target  X  T_V T_B count_V  count_B     v       dv      b       db   color   dcolor  V   COLOR  B  
------- --- --- --- -------- -------- ------- ------- ------- ------- ------ ------- ---- ----- ----
-  std1 1.0   5  10 12687301 22438244 -16.011 0.00030 -15.877 0.00023  0.134 0.00038  9.1  -0.3  8.8
-  std1 1.3   7  12 14711983 25343232 -15.806 0.00028 -15.812 0.00022 -0.005 0.00036  9.1  -0.3  8.8
-  std1 2.0   9  15 15845201 25669738 -15.614 0.00027 -15.583 0.00021  0.031 0.00035  9.1  -0.3  8.8
-  std2 1.0   5  10  5534312  7521077 -15.110 0.00046 -14.691 0.00040  0.420 0.00061 10.0   0.0 10.0
-  std2 1.3   7  12  6404748  8489650 -14.904 0.00043 -14.624 0.00037  0.279 0.00057 10.0   0.0 10.0
-  std2 2.0   9  15  6885820  8636456 -14.709 0.00041 -14.401 0.00037  0.309 0.00055 10.0   0.0 10.0
-  std3 1.0   5  10  2280320  1835230 -14.148 0.00072 -13.159 0.00080  0.988 0.00108 11.0   0.6 11.6
-  std3 1.3   7  12  2638025  2060068 -13.940 0.00067 -13.087 0.00076  0.854 0.00101 11.0   0.6 11.6
-  std3 2.0   9  15  2796503  2042511 -13.731 0.00065 -12.835 0.00076  0.896 0.00100 11.0   0.6 11.6
-Plot of literature VS instrumental magnitudes
-</pre>
-</div>
-</div>
-
-<div class="output_area">
-<div class="prompt"></div>
-
-
-
-<div class="output_png output_subarea ">
-<img src="data:image/png;base64,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
-"
->
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>As you can see, the literature and the instrumental magnitude differ a lot, by roughly about 25 magnitude, but in a good linear relationship. Since the literature values are exact, we have to find a way to tune the instrumental magnitude to match the literature magnitudes. This is the standardization, as mentioned before.</p>
-<hr>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Example-3:-Parameters-for-Standardization">Example 3: Parameters for Standardization<a class="anchor-link" href="#Example-3:-Parameters-for-Standardization">&#182;</a></h2><p>We will start from the following formula:</p>
-\begin{align}
-    v - V &=  z_{V} + k_{V} X \quad( + {\rm color~correction~terms})~,\\
-    b - B &=  z_{B} + k_{B} X \quad( + {\rm color~correction~terms})~,
-\end{align}<p>where $v(b)$ and $V(B)$ are the instrumental and literature magnitudes of standard stars.</p>
-<blockquote><p><strong> How do we obtain the zero point ($z$) and the extinction coefficient ($k$)?</strong></p>
-</blockquote>
-<p>Answer is very simple: Fit a line to ($v - V$) and ($b-B$) versus $X$!</p>
-<p>I will use line fitting module from <code>scipy.optimize.curve_fit</code>, but you can also use <code>numpy.polyfit</code> or just make your own package to use.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="k">import</span> <span class="n">curve_fit</span>
-
-<span class="c1"># Define a function that will be used for fitting.</span>
-<span class="c1"># Except for x, other two parameters (zero and k) should have &#39;default&#39; value</span>
-<span class="c1"># to be used in scipy.optimize.curve_fit.</span>
-<span class="k">def</span> <span class="nf">fitting</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">zero</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">zero</span> <span class="o">+</span> <span class="n">k</span><span class="o">*</span><span class="n">x</span>
-
-<span class="n">vV</span> <span class="o">=</span> <span class="n">data_std</span><span class="p">[</span><span class="s1">&#39;v&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">data_std</span><span class="p">[</span><span class="s1">&#39;V&#39;</span><span class="p">]</span>
-<span class="n">bB</span> <span class="o">=</span> <span class="n">data_std</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">data_std</span><span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">]</span>
-
-<span class="c1"># curve_fit gives two outputs: fitted parameters &amp; covariance matrix</span>
-<span class="c1"># The covariance matrix can be used for parameter error analysis and correlation check.</span>
-<span class="n">fitted_V</span> <span class="o">=</span> <span class="n">curve_fit</span><span class="p">(</span><span class="n">fitting</span><span class="p">,</span> <span class="n">data_std</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">],</span> <span class="n">vV</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">data_std</span><span class="p">[</span><span class="s1">&#39;dv&#39;</span><span class="p">])</span>
-<span class="n">fitted_B</span> <span class="o">=</span> <span class="n">curve_fit</span><span class="p">(</span><span class="n">fitting</span><span class="p">,</span> <span class="n">data_std</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">],</span> <span class="n">bB</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">data_std</span><span class="p">[</span><span class="s1">&#39;db&#39;</span><span class="p">])</span>
-<span class="n">fitpar_V</span> <span class="o">=</span> <span class="n">fitted_V</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># contains z_V and k_V</span>
-<span class="n">fitpar_B</span> <span class="o">=</span> <span class="n">fitted_B</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># contains z_B and k_B</span>
-
-<span class="c1"># In Python, *something means you &quot;unzip&quot; the variable named &quot;something&quot;.</span>
-<span class="c1"># If something=[1, 2, 3], &#39;*something&#39; is identical to type &#39;1, 2, 3&#39;.</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data_std</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">],</span> <span class="n">vV</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data_std</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">],</span> <span class="n">fitting</span><span class="p">(</span><span class="n">data_std</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">],</span> <span class="o">*</span><span class="n">fitpar_V</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;V&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data_std</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">],</span> <span class="n">fitting</span><span class="p">(</span><span class="n">data_std</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">],</span> <span class="o">*</span><span class="n">fitpar_B</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;B&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data_std</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">],</span> <span class="n">bB</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Airmass (X)&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;obs - true magnitude&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;B: z_B &amp; k_B =&#39;</span><span class="p">,</span><span class="n">fitpar_B</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;V: z_V &amp; k_V =&#39;</span><span class="p">,</span><span class="n">fitpar_V</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-<div class="prompt"></div>
-
-
-
-<div class="output_png output_subarea ">
-<img src="data:image/png;base64,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
-8f8psFRJAFz+tAAAAABJRU5ErkJggg==
-"
->
-</div>
-
-</div>
-
-<div class="output_area">
-<div class="prompt"></div>
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>B: z_B &amp; k_B = [-24.99762076   0.30163876]
-V: z_V &amp; k_V = [-25.44562147   0.37269281]
-</pre>
-</div>
-</div>
-
 </div>
 </div>
 
@@ -13797,59 +12059,9 @@ V: z_V &amp; k_V = [-25.44562147   0.37269281]
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <hr>
-<h2 id="Example-4:-Standardization-with-One-More-Color-Term">Example 4: Standardization with One More Color Term<a class="anchor-link" href="#Example-4:-Standardization-with-One-More-Color-Term">&#182;</a></h2><p>Although we neglected the color terms in section 2.2, of course at some point you may want to get more accurate result. One possible way is to neglect the $k_{XC}$ term, but include $a$ term. Then you can combine the following two:</p>
-\begin{align}
-    z_V' &= v - V - z_V \\
-        &= k_V X + a_V({\rm B}-{\rm V}) \\
-    z_B' &= b - v - z_C \\
-        &= k_C X + a_C({\rm B}-{\rm V}) ~.
-\end{align}<p>The subscript $C$ means color.</p>
-
+<h2 id="4.-Reducing-Object-Images">4. Reducing Object Images<a class="anchor-link" href="#4.-Reducing-Object-Images">&#182;</a></h2>
 </div>
 </div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">fitting2</span><span class="p">(</span><span class="n">INPUT</span><span class="p">,</span> <span class="n">zero</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-    <span class="n">X</span>     <span class="o">=</span> <span class="n">INPUT</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]</span>
-    <span class="n">COLOR</span> <span class="o">=</span> <span class="n">INPUT</span><span class="p">[</span><span class="s1">&#39;COLOR&#39;</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">zero</span> <span class="o">+</span> <span class="n">k</span><span class="o">*</span><span class="n">X</span> <span class="o">+</span> <span class="n">a</span><span class="o">*</span><span class="n">COLOR</span>
-
-<span class="n">vV</span> <span class="o">=</span> <span class="n">data_std</span><span class="p">[</span><span class="s1">&#39;v&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">data_std</span><span class="p">[</span><span class="s1">&#39;V&#39;</span><span class="p">]</span>
-<span class="n">bv</span> <span class="o">=</span> <span class="n">data_std</span><span class="p">[</span><span class="s1">&#39;color&#39;</span><span class="p">]</span>
-
-<span class="n">fitted_vV</span> <span class="o">=</span> <span class="n">curve_fit</span><span class="p">(</span><span class="n">fitting2</span><span class="p">,</span> <span class="n">data_std</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">,</span><span class="s1">&#39;COLOR&#39;</span><span class="p">],</span> <span class="n">vV</span><span class="p">)</span>
-<span class="n">fitpar_vV</span> <span class="o">=</span> <span class="n">fitted_vV</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">fitted_bv</span> <span class="o">=</span> <span class="n">curve_fit</span><span class="p">(</span><span class="n">fitting2</span><span class="p">,</span> <span class="n">data_std</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">,</span><span class="s1">&#39;COLOR&#39;</span><span class="p">],</span> <span class="n">bv</span><span class="p">)</span>
-<span class="n">fitpar_bv</span> <span class="o">=</span> <span class="n">fitted_bv</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;v-V: z_V , k_V , a_V =&#39;</span><span class="p">,</span><span class="n">fitpar_vV</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;b-v: z_C , k_C , a_C =&#39;</span><span class="p">,</span><span class="n">fitpar_bv</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-<div class="prompt"></div>
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>v-V: z_V , k_V , a_V = [-25.4652505    0.38337417  -0.03535229]
-b-v: z_C , k_C , a_C = [ 0.44555979 -0.07489208  0.95596985]
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
     </div>
   </div>
