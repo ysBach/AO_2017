@@ -11800,6 +11800,7 @@ div#notebook {
 </li>
 </ul>
 <p>The installation may take some time. If you have nothing to do, read the next section during the installation.</p>
+<hr>
 
 </div>
 </div>
@@ -11809,9 +11810,10 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Anaconda">Anaconda<a class="anchor-link" href="#Anaconda">&#182;</a></h2><p>All the IRAF/Astropy packages will be downloaded via a platform called <strong>Anaconda</strong>. So let's download <a href="https://www.continuum.io/downloads">Anaconda</a>. If you are running out of space and really want very small package, try <strong>miniconda</strong>.</p>
+<h2 id="1.-Anaconda">1. Anaconda<a class="anchor-link" href="#1.-Anaconda">&#182;</a></h2><p>All the IRAF/Astropy packages will be downloaded via a platform called <strong>Anaconda</strong>. So let's download <a href="https://www.continuum.io/downloads">Anaconda</a>. If you are running out of space and really want very small package, try <strong>miniconda</strong>.</p>
 <p>It doesn't matter which one you choose (Python 2 or 3). I recommend to use Anaconda3 and use Python 3, since it is the <em>future</em> of Python.</p>
 <p>When the download is done, turn the terminal on and type as the website says.</p>
+<hr>
 
 </div>
 </div>
@@ -11821,7 +11823,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="IRAF">IRAF<a class="anchor-link" href="#IRAF">&#182;</a></h2><p>There have been a lot of different ways to install IRAF: First people had to download with a lot of commands including "<code>cd ..</code>", "<code>wget blahblah</code>", etc. Then STScI developed a huge pack of all necessary softwares, named <strong>Ureka</strong>. But using Ureka is deprecated since April 2016. Now we use <strong>AstroConda</strong>. There are reasons for these transformations, and you may be able to find the reasons as time goes, if you are interested.</p>
+<h2 id="2.-IRAF">2. IRAF<a class="anchor-link" href="#2.-IRAF">&#182;</a></h2><p>There have been a lot of different ways to install IRAF: First people had to download with a lot of commands including "<code>cd ..</code>", "<code>wget blahblah</code>", etc. Then STScI developed a huge pack of all necessary softwares, named <strong>Ureka</strong>. But using Ureka is deprecated since April 2016. Now we use <strong>AstroConda</strong>. There are reasons for these transformations, and you may be able to find the reasons as time goes, if you are interested.</p>
 <p>Anyway, let's do the IRAF installation via Anaconda! The following is identical to the official website of <a href="http://astroconda.readthedocs.io/en/latest/installation.html">AstroConda</a>.</p>
 <p>In terminal, type the followings (This may take <strong>tens of minutes</strong> depending on the internet connections!)</p>
 
@@ -11831,6 +11833,7 @@ conda create -n iraf python=2.7 iraf pyraf stsci
 
 </code></pre>
 <p>The name of the environment, <code>iraf</code>, is <code>iraf27</code> in the original official website, but I just prefer <code>iraf</code> for it's shorter. You can set it as any name you like.</p>
+<hr>
 
 </div>
 </div>
@@ -11840,32 +11843,40 @@ conda create -n iraf python=2.7 iraf pyraf stsci
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Astropy">Astropy<a class="anchor-link" href="#Astropy">&#182;</a></h2><p>Astropy is the name of a project which devotes its human power in developing a <em>single</em> package containing tools useful for astronomers in Python language(<a href="https://github.com/astropy/astropy/wiki">GitHub</a>, <a href="http://www.astropy.org/">Official website</a>, <a href="http://docs.astropy.org/en/stable/">The most recent stable distribution documentation</a>).</p>
-<p>You can simply test Astropy by typing the followings on the terminal</p>
+<h2 id="3.-Astropy-and-Photutils">3. Astropy and Photutils<a class="anchor-link" href="#3.-Astropy-and-Photutils">&#182;</a></h2><p>Astropy is the name of a project which devotes its human power in developing a <em>single</em> package containing tools useful for astronomers in Python language(<a href="https://github.com/astropy/astropy/wiki">GitHub</a>, <a href="http://www.astropy.org/">Official website</a>, <a href="http://docs.astropy.org/en/stable/">The most recent stable distribution documentation</a>).</p>
+<p>You should have Astropy by default if you used Anaconda.</p>
+<h3 id="Affiliated:-photutils">Affiliated: photutils<a class="anchor-link" href="#Affiliated:-photutils">&#182;</a></h3><p>You may have found the so-called "affiliated" packages listed <a href="http://www.astropy.org/affiliated/">here</a>. Astropy is installed by Anaconda, but not these affiliated packages. Among these, you SHOULD download <a href="http://photutils.readthedocs.io/en/stable/">photutils</a>. To download, type</p>
+
+<pre><code>conda install -c astropy photutils
+
+</code></pre>
+<p>on the terminal.</p>
+<h3 id="Affiliated:-Ginga-(optional)">Affiliated: Ginga (optional)<a class="anchor-link" href="#Affiliated:-Ginga-(optional)">&#182;</a></h3><p>Please see the "image displayer" section.</p>
+<h3 id="Testing-Packages">Testing Packages<a class="anchor-link" href="#Testing-Packages">&#182;</a></h3><p>You can simply test the installation by tests. Run ipython from terminal:</p>
 
 <pre><code>ipython
 
 </code></pre>
 <p>Then you are now in the ipython console, and type</p>
-
-<pre><code>import astropy
-astropy.test()
-
-</code></pre>
-<p>The astropy will do the tests automatically (takes ~ 10 minutes). There might be some errors, but usually they are not important, so you can ignore them. If "astropy.test()" itself does not work, please check whether the installation of Anaconda had been done correctly.</p>
-<h3 id="Affiliated:-photutils">Affiliated: photutils<a class="anchor-link" href="#Affiliated:-photutils">&#182;</a></h3><p>You may have found the so-called "affiliated" packages listed <a href="http://www.astropy.org/affiliated/">here</a>. Among these, you SHOULD download <a href="http://photutils.readthedocs.io/en/stable/">photutils</a>. To download, type</p>
-
-<pre><code>conda install -c astropy photutils
-
-</code></pre>
-<p>on the terminal. As you did for astropy, type</p>
-
-<pre><code>import photutils
-photutils.test()
-
-</code></pre>
-<p>To test the photutils packages.</p>
-<h3 id="Affiliated:-Ginga-(optional)">Affiliated: Ginga (optional)<a class="anchor-link" href="#Affiliated:-Ginga-(optional)">&#182;</a></h3><p>Please see the "image displayer" section.</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">astropy</span><span class="o">,</span> <span class="nn">photutils</span>
+<span class="n">photutils</span><span class="o">.</span><span class="n">test</span><span class="p">()</span>
+<span class="n">astropy</span><span class="o">.</span><span class="n">test</span><span class="p">()</span>
+</pre></div>
+<p>These will take quite long time, especially astropy takes very long time. (So I didn't show you the full result)</p>
+<p>You need to do it only once when you first installed these packages. If you want to test only some part of the whole package, you can specify the module, e.g., you can test <code>astropy.io.fits</code> by:</p>
+<div class="highlight"><pre><span></span><span class="n">astropy</span><span class="o">.</span><span class="n">test</span><span class="p">(</span><span class="n">package</span><span class="o">=</span><span class="s1">&#39;io.fits&#39;</span><span class="p">)</span>
+</pre></div>
+<p>While the test is going on, look at the names of the directories, like <code>astropy/table</code>, <code>astropy/units</code>, etc. These are the names we will encounter very frequently, so this test is not only to <strong>test</strong>, but also to get accustomed to the astropy and python language.</p>
+<p>Each dot(<code>.</code>) means <code>test passed</code> and <code>x</code> means <code>test failed</code>. But some of the failures are just OK. <code>s</code> means it is skipped for some reason.</p>
+<p>I did tests for <strong>Astropy 1.3.1 and Photutils 0.3.1</strong> (took ~ 10 mins) and got the following messages:</p>
+<div class="highlight"><pre><span></span><span class="o">(</span>long long <span class="nb">test</span> explanations....<span class="o">)</span>
+<span class="o">========================</span> <span class="m">1056</span> passed, <span class="m">2</span> skipped, <span class="m">2</span> xfailed in <span class="m">82</span>.18 <span class="nv">seconds</span> <span class="o">========================</span>
+<span class="o">(</span>long long <span class="nb">test</span> explanations....<span class="o">)</span>
+Some tests are known to fail when run from the IPython prompt<span class="p">;</span> especially, but not limited to tests involving logging and warning handling.  Unless you are certain as to the cause of the failure, please check that the failure occurs outside IPython as well.  See http://docs.astropy.org/en/stable/known_issues.html#failing-logging-tests-when-running-the-tests-in-ipython <span class="k">for</span> more information.
+<span class="o">==</span> <span class="m">24</span> failed, <span class="m">8717</span> passed, <span class="m">75</span> skipped, <span class="m">42</span> xfailed, <span class="m">1</span> xpassed, <span class="m">2</span> pytest-warnings in <span class="m">573</span>.02 <span class="nv">seconds</span> <span class="o">==</span>
+</pre></div>
+<p>The astropy will do the tests automatically (takes ~ 10 minutes). There might be some errors, but usually they are not important, so you can ignore them. If "<code>astropy.test()</code>" itself does not work, please check whether the installation of Anaconda had been done correctly.</p>
+<hr>
 
 </div>
 </div>
@@ -11875,9 +11886,10 @@ photutils.test()
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Editors">Editors<a class="anchor-link" href="#Editors">&#182;</a></h2><p>There are bunch of different editors (including IDEs = Integrated Development Environment) to edit the codes. I personally use spyder (it is installed from Anaconda by default, and you can use it by double-click the spyder app icon or type <code>spyder &amp;</code> on the terminal).</p>
+<h2 id="4.-Editors">4. Editors<a class="anchor-link" href="#4.-Editors">&#182;</a></h2><p>There are bunch of different editors (including IDEs = Integrated Development Environment) to edit the codes. I personally use spyder (it is installed from Anaconda by default, and you can use it by double-click the spyder app icon or type <code>spyder &amp;</code> on the terminal).</p>
 <p>Some may prefer <strong>Wing</strong> IDE, which is widely being used in educational institutions, or <strong>PyDev</strong>, <strong>PyCharm</strong>, and even <strong>VI</strong> or <strong>Emacs</strong>. VI is quite powerful since it is accessible for virtually all of the computers around the world by default, and the debugger, gdb, is also accessible on terminal. If you have an IDE, it most likely contain its own fancy debugger, too. For Windows computers, <strong>Visual Studio</strong> is also a good choice. For Ubuntu, <strong>gedit</strong> or <strong>geany</strong> are also attractable choices. <strong>Atom</strong> is also a fancy editor. I use geany for miscellaneous and short works because it is extremely light, and Atom for coding C language-based programs.</p>
 <p>I have tried all the aforementioned editors, and settled down to the lightest, fastest, most intuitive/interactive, and yet functional editors after ~ 1 year of trial and error. BUT this is just my personal opinion, and you may find very different solution. I have many friends who use VI only for all the coding works. If you can, I recommend to use VI as your main editor, and at least learn how to use it. I don't use VI just because for me it is too difficult to use it.</p>
+<hr>
 
 </div>
 </div>
@@ -11887,7 +11899,7 @@ photutils.test()
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Image-Displayer">Image Displayer<a class="anchor-link" href="#Image-Displayer">&#182;</a></h2><p>In astronomical image reduction process, you need some tools to display images on computer screen to interactively investigate the images. There is a <em>historical standard</em>, which is kind of an <em>affiliated package of IRAF</em>, <a href="http://ds9.si.edu/site/Download.html">SAO ds9</a>. The most recent version as of Feb 2017 is ver 7.5. Some people use <a href="http://diffractionlimited.com/product/maxim-dl/">Maxim DL</a>, but it's commercial and used mostly by amateur astronomers. In the future, as Python gets more and more intention, Ginga will be another powerful option. We are not sure when Ginga will become quite <em>perfect</em>, but until then, I recommend you to use both of them. Their pros and cons will be explained from now.</p>
+<h2 id="5.-Image-Displayer">5. Image Displayer<a class="anchor-link" href="#5.-Image-Displayer">&#182;</a></h2><p>In astronomical image reduction process, you need some tools to display images on computer screen to interactively investigate the images. There is a <em>historical standard</em>, which is kind of an <em>affiliated package of IRAF</em>, <a href="http://ds9.si.edu/site/Download.html">SAO ds9</a>. The most recent version as of Feb 2017 is ver 7.5. Some people use <a href="http://diffractionlimited.com/product/maxim-dl/">Maxim DL</a>, but it's commercial and used mostly by amateur astronomers. In the future, as Python gets more and more intention, Ginga will be another powerful option. We are not sure when Ginga will become quite <em>perfect</em>, but until then, I recommend you to use both of them. Their pros and cons will be explained from now.</p>
 <h3 id="SAO-ds9">SAO ds9<a class="anchor-link" href="#SAO-ds9">&#182;</a></h3><p>SAO ds9 was made for Chandra X-ray observation, but became so powerful that it has been used for decades by virtually all astronomers.  It has many powerful features, which mostly are not yet fully implemented to Ginga. By the system default, you will use ds9 to open any FITS image.</p>
 <p>If you want to run ds9, you can do <code>ds9 &amp;</code> on terminal. Once you've got used to ds9, you can do a bit advanced command such as</p>
 
@@ -11916,34 +11928,15 @@ photutils.test()
 <p>You can use <code>ginga &amp;</code> on terminal or <code>ecl&gt; !ginga &amp;</code> on IRAF console. Although you can do <code>ginga image.fits &amp;</code> as you did for ds9, it is usually better to use interactive drag-and-drop way to open image than command line. In Ginga, you can also use <code>tools -&gt; FBrowser</code>.</p>
 <p>I couldn't find how to use Ginga with IRAF yet.... Though <a href="http://ginga.readthedocs.io/en/latest/manual/plugins_global/iraf.html">this official site</a> says you can. I think this is a <a href="https://trello.com/c/6mt7oBXZ/44-iraf-plugin-implemented">known bug</a> that you actually cannot.</p>
 <h3 id="Displayers-from-Python">Displayers from Python<a class="anchor-link" href="#Displayers-from-Python">&#182;</a></h3><p>Although it is not recommended, you may want to open ds9 or ginga from Python (e.g., iPython or Spyder), than terminal or Windows command prompt. In such case, you can <code>import</code> a module called <code>subprocess</code>. Using <code>subprocess</code>, you can run the command from Python as if you are typing it on terminal:</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">subprocess</span> <span class="k">as</span> <span class="nn">sp</span>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">subprocess</span> <span class="kn">as</span> <span class="nn">sp</span>
 
 <span class="c1"># Open SAO ds9:</span>
 <span class="n">sp</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="s2">&quot;ds9&quot;</span><span class="p">)</span>
 <span class="c1"># Open ginga:</span>
 <span class="n">sp</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="s2">&quot;ginga&quot;</span><span class="p">)</span>
 </pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>You can use various different ways, such as module <code>os</code>, or <code>check_call</code>, <code>Popen</code>, etc. But it is not recommended in most instances, as far as I know.</p>
+<p>You can use various different ways, such as module <code>os</code>, or <code>check_call</code>, <code>Popen</code>, etc. But it is not recommended to open <code>ginga</code> or <code>ds9</code> from python in most instances, as far as I know.</p>
+<hr>
 
 </div>
 </div>
@@ -11953,7 +11946,7 @@ photutils.test()
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="The-Zen-of-Python">The Zen of Python<a class="anchor-link" href="#The-Zen-of-Python">&#182;</a></h2><p>Python is a programming langauge. Most importantly, it is <strong>object oriented</strong> and <strong>interpreted</strong>, <strong>high-level language</strong>. In short, it means <strong>"Python is quite powerful, modern, intuitive, flexible, and easy to use."</strong></p>
+<h2 id="6.-The-Zen-of-Python">6. The Zen of Python<a class="anchor-link" href="#6.-The-Zen-of-Python">&#182;</a></h2><p>Python is a programming langauge. Most importantly, it is <strong>object oriented</strong> and <strong>interpreted</strong>, <strong>high-level language</strong>. In short, it means <strong>"Python is quite powerful, modern, intuitive, flexible, and easy to use."</strong></p>
 <p>The following is so-called <strong>The Zen of Python</strong>. As the name says, it consist of some <em>morals</em> that python keeps in mind. These are not only for the python developers, but also for any python users to code in <strong>pythonic</strong> way.</p>
 <ul>
 <li>Beautiful is better than ugly. </li>
@@ -12066,19 +12059,6 @@ Namespaces are one honking great idea -- let&#39;s do more of those!
 
 </div>
 </div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-</div>
-</div>
-</div>
-
 </div>
     </div>
   </div>

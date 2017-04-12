@@ -11801,9 +11801,8 @@ div#notebook {
 \begin{equation}
     f_{\rm Gauss}(r) =\frac{1}{\sqrt{2 \pi \sigma^2}} e^{ -(r-r_0)^2/2\sigma^2 } 
     \qquad f_{\rm Moffat} (r) = A \left [ 1 + \left ( \frac{r-r_0}{R} \right )^2 \right ]^{-\beta}
-\end{equation}<p>Here, $A$ in the Moffat profile is the normalization constant. $r$ and $r_0$ are the distance from the center and the position of the center. By integration, I obtained $ A = \frac{\Gamma(\beta)}{R\sqrt{\pi} \Gamma(\beta-\frac{1}{2})} $ for normalization. The parameter $R$ is called the core width and $\beta$ is called the power. Moffat considered atmospheric turbulence, instrumental abberation, and photographic receiver, which may not fit perfectly to modern devices. Thus, in modern CCD observations, especially those done until 2000s, $\beta$ is usually fixed as 1.5 or 2.5.</p>
-<p>In uniform atmospheric seeing condition, psf should appear symmetric, i.e., isophotal curves should look like a circle. It actually is rarely the case. We encounter elliptical, or even irregularly shaped isophotes. In such
-cases, we have to make elliptical model rotated by certain angle. Those fitting can be done from Astropy, so do not worry too much about how to construct mathermatical formalism. It is enough to know the concept and be able to derive FWHM, HWHM, or so.</p>
+\end{equation}<p>Here, $A$ in the Moffat profile is the normalization constant. $r$ and $r_0$ are the distance from the center and the position of the center. By integration, I obtained $ A = \frac{\Gamma(\beta)}{R\sqrt{\pi} \Gamma(\beta-\frac{1}{2})} $ for normalization. The parameter $R$ is called the core width and $\beta$ is called the power. Moffat considered atmospheric turbulence, instrumental abberation, and photographic receiver.</p>
+<p>In uniform atmospheric seeing condition and long exposure time, psf should converge to a symmetric shape, i.e., isophotal curves should look like a concentric circles. It actually is rarely the case. We encounter elliptical, or even irregularly shaped isophotes. In such cases, you may make elliptical model rotated by certain angle, or simulate the seeing. Those fitting or simulation can be done using Astropy if necessary. Usually we believe the tracking is perfect, and use circular aperture.</p>
 <p>In the following example, I will show you the difference between Gaussian and Moffat in 1-D simple case.</p>
 
 </div>
@@ -12925,7 +12924,7 @@ RU5ErkJggg==
 <p>This process, <em>transforming the instrumental magnitude to the "real" magnitude</em>, is called the <strong>standardization</strong>.</p>
 <h3 id="4.2.-Standardization-in-Practice">4.2. Standardization in Practice<a class="anchor-link" href="#4.2.-Standardization-in-Practice">&#182;</a></h3><p>Now, how do we get $m_z$ and $k_X$? What we know is only $X$ and what we can calculate is only $m_{\rm inst}$! Fortunately, we have some stars which have very accurately known $m_0$ values. These are called the <strong>standard stars</strong>. Some famous ones are <strong>Landolt standard stars</strong>.</p>
 <p>So the strategy is clear: Take images of standard stars at different airmasses, at nearly identical sky conditions. Plot $m_{\rm inst} - m_0$ VS $X$, and the slope and intercept will be $k_X$ and $m_z$, respectively. This is only true when we neglect the wavelength (or color) dependency of extinction. Note that these two depends on sky condition, i.e., <strong>these should be determined at each night</strong>, in principle.</p>
-<p>The easiest case occurs if the targets of interst are at almost identical zenith distance (i.e., constant $X$). Observation on bright star clusters are such cases. Then we can regard $k_X X$ as a constant, and set it as part of $m_z$, so $ m_0 = m_{\rm inst} - m_z' $.</p>
+<p>The easiest case occurs if the targets of interst are at almost identical zenith distance (i.e., constant $X$). Observation of a bright star cluster is such a case. Then we can regard $k_X X$ as a constant, and set it as part of $m_z$, so $ m_0 = m_{\rm inst} - m_z' $.</p>
 <hr>
 
 </div>
@@ -13025,7 +13024,8 @@ Target    X     T_V   T_B  count_V  count_B
 <li><p><strong>TIP</strong>: Say</p>
 <ul>
 <li>$m_s$: sky (mean, median, mode, or any other representative one) (ADU/pixel), </li>
-<li>$\sigma_s$: sky standard deviation (will be calculated in unit electrons/pixel),</li>
+<li>$s_s$: sky <em>sample</em> standard deviation (electrons/pixel),</li>
+<li>$\sigma_s$: the <em>true</em> sky standard deviatio (electrons/pixel),</li>
 <li>$g$: (effective) electron gain (electrons/ADU),</li>
 <li>$R$: readout noise (electrons/pixel),</li>
 <li>$N_{\rm tot}$: total count inside the aperture (including sky) (ADU),</li>
@@ -13042,14 +13042,14 @@ Note that $\sigma_s$ is calculated <em>before</em> we calculate the stellar magn
         &\approx 1.0857 \frac{\sqrt{N_{\rm tot} g
                         + n_a \sigma_s^2 
                         + \frac{n_a^2 \sigma_s^2}{n_s} }}
-                {(N_{\rm tot} - n_s m_s)g}\\
-        &= 1.0857 \frac{\sqrt{ \frac{N_{\rm tot} }{g}
-                        + n_a (\frac{\sigma_s}{g})^2 
-                        + \frac{n_a^2 (\sigma_s/g)^2}{n_s} }}
-                {N_{\rm tot} - n_s m_s}  ~,\\
-    \sigma_s &= m_s g + R^2 \quad({\rm Poissonian~+~Gaussian})
-\end{align}<ul>
-<li><p><strong>TIP</strong>: For a <em>very accurate</em> error analysis, see Merline &amp; Howell 1995 (Experimental Astronomy, <strong>6</strong>, <em>163</em>)</p>
+                {(N_{\rm tot} - n_s m_s)g} ~,\\
+    \sigma_s^2 &= m_s g + R^2 \quad({\rm Poissonian~+~Gaussian})
+\end{align}<blockquote><p>Proof for $\Delta N$:</p>
+</blockquote>
+<ul>
+<li><p><strong>TIP</strong>: For a <em>very accurate</em> error analysis using CCD, see Merline &amp; Howell 1995 (Experimental Astronomy, <strong>6</strong>, <em>163</em>)</p>
+</li>
+<li><p><strong>TIP</strong>: It's bothersome to think about the ADU and electron units all the time. As a rule of thumb, think you always have to change all the ADU's to the electrons unit. Then you can realize where the gain factor should be.</p>
 </li>
 <li><p><strong>Question</strong>: If several images are combined by summing, averaging, or medianing to make one image, it means we have more <em>information</em> in that single image, and thus our intuition says that the uncertainty ($\Delta N/N$) should become smaller. Which parameters do you think will be changed to diminish $\Delta N/N$ ?</p>
 </li>
