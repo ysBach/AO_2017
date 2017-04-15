@@ -34,17 +34,17 @@ Notes 00, 01, and 02 are not covered in class times.
 
 
 ### Schedules
-**Session 01 (2017-04-13)** 
+**Session 01 (2017-04-13)**   
 Introduction + TA show using [HLA](http://hla.stsci.edu/)
 * [Presentation](https://drive.google.com/file/d/0B-MLFRYnMxUvQ1BJTkhNcVNveFFkYURLdDVMaWZkVDA5V05J/view?usp=sharing)
 * Corresponding notebook = 03
     
-**Session 02 (2017-04-18)** 
+**Session 02 (2017-04-18)**   
 Basic Knowledge on Preprocessing, Aperture Photometry, and Statistics
 * Presentation (not uploaded yet)
 * Corresponding notebook = 04 and Appendix A
 
-**Session 03 (2017-04-20)** 
+**Session 03 (2017-04-20)**   
 Concepts on Ground Based Data Reduction 
 IRAF Tutorial Using Archived Data 01
 * Presentation (not uploaded yet)
