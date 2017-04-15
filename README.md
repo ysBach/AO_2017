@@ -20,7 +20,7 @@ Uploaded on [Google Drive](https://drive.google.com/open?id=1Tt-j8SrdfzE-gBOzgxW
 ### Notebooks Outline
 
 00. Preface in [English](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/00_Preface-English.ipynb) and [Korean](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/00_Preface-Korean.ipynb)
-01. [Installation](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/01_Installation.ipynb) + [LINUX Basic](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/01_LINUX_Shell.ipynb)
+01. [Installation](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/01_Installation.ipynb) and [LINUX Basic](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/01_LINUX_Shell.ipynb)
 02. [Python Basic](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/02_Python_Basic.ipynb)
 03. [Get the Taste](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/03_Get_the_Taste.ipynb) (showing some primitive reduction skills using HST data)
 04. [Reducing Ground-Based Observation Data: Concepts](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/04_Ground_Based_Concept.ipynb)
@@ -30,6 +30,9 @@ Uploaded on [Google Drive](https://drive.google.com/open?id=1Tt-j8SrdfzE-gBOzgxW
 * Appendix A. [Photometric Errors](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/App_A_Photometric_Errors.ipynb)
 * Appendix B. Background Estimation
 
+Notes 00, 01, and 02 are not covered in class times.
+
+
 ### Schedules
 **Session 01 (2017-04-13)** 
 Introduction + TA show using [HLA](http://hla.stsci.edu/)
@@ -37,7 +40,7 @@ Introduction + TA show using [HLA](http://hla.stsci.edu/)
 * Corresponding notebook = 03
     
 **Session 02 (2017-04-18)** 
-Preprocessing, Aperture Photometry, and Statistics
+Basic Knowledge on Preprocessing, Aperture Photometry, and Statistics
 * Presentation (not uploaded yet)
 * Corresponding notebook = 04 and Appendix A
 
