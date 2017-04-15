@@ -8,7 +8,7 @@ Astronomical Observation and Lab. 1 (AO1) at Seoul National University (SNU) in 
 
 For the detailed introduction, see the prefaces.
 
-# Schedules and Lecture Notes
+# Schedules of TA Sessions and TA Lecture Notes
 
 ## Outline of TA sessions
 
