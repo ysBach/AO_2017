@@ -22,7 +22,7 @@ Uploaded on [Google Drive](https://drive.google.com/open?id=1Tt-j8SrdfzE-gBOzgxW
 00. Preface in [English](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/00_Preface-English.ipynb) and [Korean](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/00_Preface-Korean.ipynb)
 01. [Installation](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/01_Installation.ipynb) and [LINUX Basic](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/01_LINUX_Shell.ipynb)
 02. [Python Basic](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/02_Python_Basic.ipynb)
-03. [Get the Taste](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/03_Get_the_Taste.ipynb) (showing some primitive reduction skills using HST data)
+03. [Get the Taste](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/03_Get_the_Taste.ipynb) (showing few examples using HST data)
 04. [Reducing Ground-Based Observation Data: Concepts](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/04_Ground_Based_Concept.ipynb)
 05. [How to IRAF](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/05_IRAF_Tutorial.ipynb)
 06. [Simple Preprocessing Using Python + Cosmic-Ray Rejection](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/06_Preprocessing_with_Python.ipynb)
