@@ -1,6 +1,6 @@
 # AO2017
 
-# Instructors
+## Instructors
 Astronomical Observation and Lab. 1 (AO1) at Seoul National University (SNU) in 2017 
 
 * Lecturer: professor Masateru Ishiguro 
@@ -8,16 +8,12 @@ Astronomical Observation and Lab. 1 (AO1) at Seoul National University (SNU) in 
 
 For the detailed introduction, see the prefaces.
 
-# Schedules of TA Sessions and TA Lecture Notes
-
 ## Outline of TA sessions
 
-Uploaded on [Google Drive](https://drive.google.com/open?id=1Tt-j8SrdfzE-gBOzgxW061ngEbRz5njnbw-8lHO9GnI)
+Uploaded on Google Drive: [Link](https://drive.google.com/open?id=1Tt-j8SrdfzE-gBOzgxW061ngEbRz5njnbw-8lHO9GnI)
 
 
-## TA lecture notes
-
-### Notebooks Outline
+## TA Lecture Notes Outline
 
 00. Preface in [English](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/00_Preface-English.ipynb) and [Korean](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/00_Preface-Korean.ipynb)
 01. [Installation](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/01_Installation.ipynb) and [LINUX Basic](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/01_LINUX_Shell.ipynb)
@@ -33,7 +29,7 @@ Uploaded on [Google Drive](https://drive.google.com/open?id=1Tt-j8SrdfzE-gBOzgxW
 Notes 00, 01, and 02 are not covered in class times.
 
 
-### Schedules
+### Schedules and Presentation
 
 **Session 01 (2017-04-13)**   
 
