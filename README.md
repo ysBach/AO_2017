@@ -17,7 +17,8 @@ Uploaded on Google Drive: [Link](https://drive.google.com/open?id=1Tt-j8SrdfzE-g
 
 The following lecture notes only gives you idea how to use tools for data reduction. **You *must* be aware of what you are doing!** Identical procedure to the lecture note may give different results, depending on what you've done other than what I did when I make the notes.
 
-00. Preface in [English](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/00_Preface-English.ipynb) and [Korean](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/00_Preface-Korean.ipynb)
+Preface in [English](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/00_Preface-English.ipynb) and [Korean](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/00_Preface-Korean.ipynb)
+
 01. [Installation](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/01_Installation.ipynb) and [LINUX Basic](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/01_LINUX_Shell.ipynb)
 02. [Python Basic](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/02_Python_Basic.ipynb)
 03. [Get the Taste](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/03_Get_the_Taste.ipynb) (showing few examples using HST data)
@@ -45,11 +46,36 @@ Introduction + TA show using [HLA](http://hla.stsci.edu/)
 
 Basic Knowledge on Preprocessing, Aperture Photometry, and Statistics
 * Presentation (not uploaded yet)
-* Corresponding notebook = 04 and Appendix A
+* Corresponding notebook = Appendix A
 
 
-**Session 03 (2017-04-20)**   
+**Session 03, 04 (2017-04-20, 25)**   
 
-Concepts on Ground Based Data Reduction and IRAF Tutorial Using Archived Data 01
-* Presentation (not uploaded yet)
-* Corresponding notebook = 04 and 05
+IRAF Tutorial Using Archived Data
+* Corresponding notebook = 05 (and 04)
+
+
+**Session 05 (2017-04-27)**   
+
+Preprocessing using Python with `ccdproc`
+* Corresponding notebook = 06
+
+
+**Session 06 (2017-05-02)**   
+
+Cosmic-Ray Rejection  
+Using `photutils` (1) : Star Finding (`DAOStarFinder`) and Aperture Plot  
+* Corresponding notebook = 07
+* Corresponding notebook = 08
+
+
+**Future Plan**   
+Using `photutils` (2) : Aperture Photometry  
+Using `photutils` (3) : Background Estimation  
+Using `photutils` (4) : Extended Sources (detection and morphology)
+
+
+
+
+
+
