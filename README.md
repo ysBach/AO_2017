@@ -15,6 +15,8 @@ Uploaded on Google Drive: [Link](https://drive.google.com/open?id=1Tt-j8SrdfzE-g
 
 ## TA Lecture Notes Outline
 
+The following lecture notes only gives you idea how to use tools for data reduction. **You *must* be aware of what you are doing!** Identical procedure to the lecture note may give different results, depending on what you've done other than what I did when I make the notes.
+
 00. Preface in [English](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/00_Preface-English.ipynb) and [Korean](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/00_Preface-Korean.ipynb)
 01. [Installation](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/01_Installation.ipynb) and [LINUX Basic](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/01_LINUX_Shell.ipynb)
 02. [Python Basic](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/02_Python_Basic.ipynb)
