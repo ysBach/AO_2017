@@ -23,7 +23,8 @@ The following lecture notes only gives you idea how to use tools for data reduct
 03. [Get the Taste](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/03_Get_the_Taste.ipynb) (showing few examples using HST data)
 04. [Reducing Ground-Based Observation Data: Concepts](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/04_Ground_Based_Concept.ipynb)
 05. [How to IRAF](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/05_IRAF_Tutorial.ipynb)
-06. [Simple Preprocessing Using Python + Cosmic-Ray Rejection](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/06_Preprocessing_with_Python.ipynb)
+06. [Simple Preprocessing Using Python](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/06_Preprocessing_with_Python.ipynb)
+07. [Cosmic-Ray Rejection](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/07_Cosmic_Ray_Rejection.ipynb)
 07. Star Finding, Aperture Photometry, and Morphology of Extended Sources
 * Appendix A. [Photometric Errors](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/App_A_Photometric_Errors.ipynb)
 * Appendix B. Background Estimation
