@@ -26,9 +26,11 @@ Preface in [English](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/mast
 05. [How to IRAF](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/05_IRAF_Tutorial.ipynb)
 06. [Simple Preprocessing Using Python](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/06_Preprocessing_with_Python.ipynb)
 07. [Cosmic-Ray Rejection](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/07_Cosmic_Ray_Rejection.ipynb)
-07. Star Finding, Aperture Photometry, and Morphology of Extended Sources
+08. [photutils (1): Star Finding](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/08_Photutils_StarFinder.ipynb)
+09. Aperture Photometry, and Morphology of Extended Sources
 * Appendix A. [Photometric Errors](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/App_A_Photometric_Errors.ipynb)
 * Appendix B. [Using Astropy for FITS](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/App_B_Using_Astropy_for_FITS.ipynb)
+* Appendix C. [Spyder](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/App_C_Spyder.ipynb)
 
 Notes 00, 01, and 02 are not covered in class times.
 
