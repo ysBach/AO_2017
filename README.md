@@ -69,15 +69,25 @@ Preprocessing using Python with `ccdproc`
 **Session 06 (2017-05-02)**   
 
 Cosmic-Ray Rejection  
-Using `photutils` (1) : Star Finding (`DAOStarFinder`) and Aperture Plot  
 * Corresponding notebook = 07
+Using `photutils` (1) : Star Finding (`DAOStarFinder`) and Aperture Plot  
 * Corresponding notebook = 08
 
 
-**Future Plan**   
-Using `photutils` (2) : Aperture Photometry  
-Using `photutils` (3) : Background Estimation  
-Using `photutils` (4) : Extended Sources (detection and morphology)
+**Session 07 (2017-05-08)**   
+
+Using `photutils` (2) : Background Estimation (SExtractor)  
+* Corresponding notebook = 09
+Using `photutils` (3) : Background Estimation (Annulus)
+* Corresponding notebook = 10
+Using `photutils` (4) : Aperture Photometry  
+* Corresponding notebook = 11
+
+
+**Session 08 (2017-05-16)** 
+
+Using `photutils` (5) : Extended Sources (detection and morphology)
+* Corresponding notebook = 12
 
 
 
