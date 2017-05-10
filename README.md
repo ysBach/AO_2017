@@ -27,7 +27,10 @@ Preface in [English](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/mast
 06. [Simple Preprocessing Using Python](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/06_Preprocessing_with_Python.ipynb)
 07. [Cosmic-Ray Rejection](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/07_Cosmic_Ray_Rejection.ipynb)
 08. [photutils (1): Star Finding](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/08_Photutils_StarFinder.ipynb)
-09. Aperture Photometry, and Morphology of Extended Sources
+09. [photutils (2): SExtractor Sky]
+10. [photutils (3): Annulus Sky]
+11. [photutils (4): Aperture Photometry]
+12. [photutils (5): Extended Sources and Morphology
 * Appendix A. [Photometric Errors](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/App_A_Photometric_Errors.ipynb)
 * Appendix B. [Using Astropy for FITS](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/App_B_Using_Astropy_for_FITS.ipynb)
 * Appendix C. [Spyder](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/App_C_Spyder.ipynb)
