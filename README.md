@@ -40,7 +40,7 @@ Preface in [English](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/mast
 Notes 00, 01, and 02 are not covered in class times.
 
 
-### Schedules and Presentation
+## Schedules and Presentation
 
 **Session 01 (2017-04-13)**   
 
@@ -89,7 +89,8 @@ Using `photutils` (5) : Extended Sources (detection and morphology)
 * Corresponding notebook = 12
 
 
-**Group Project Topic Candidates** : See [here](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/00_Group_Project_Topics.ipynb)
+## Group Project Topic Candidates
+See [here](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/00_Group_Project_Topics.ipynb)
 
 You can freely choose your own group project topics other than these list (it's even encouraged).
 
