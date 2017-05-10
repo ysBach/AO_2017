@@ -27,7 +27,10 @@ Preface in [English](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/mast
 06. [Simple Preprocessing Using Python](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/06_Preprocessing_with_Python.ipynb)
 07. [Cosmic-Ray Rejection](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/07_Cosmic_Ray_Rejection.ipynb)
 08. [photutils (1): Star Finding](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/08_Photutils_StarFinder.ipynb)
-09. Aperture Photometry, and Morphology of Extended Sources
+09. [photutils (2): SExtractor Sky]
+10. [photutils (3): Annulus Sky]
+11. [photutils (4): Aperture Photometry]
+12. [photutils (5): Extended Sources and Morphology
 * Appendix A. [Photometric Errors](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/App_A_Photometric_Errors.ipynb)
 * Appendix B. [Using Astropy for FITS](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/App_B_Using_Astropy_for_FITS.ipynb)
 * Appendix C. [Spyder](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/App_C_Spyder.ipynb)
@@ -65,16 +68,23 @@ Preprocessing using Python with `ccdproc`
 
 **Session 06 (2017-05-02)**   
 
-Cosmic-Ray Rejection  
+Cosmic-Ray Rejection    
 Using `photutils` (1) : Star Finding (`DAOStarFinder`) and Aperture Plot  
-* Corresponding notebook = 07
-* Corresponding notebook = 08
+* Corresponding notebook = 07 & 08
 
 
-**Future Plan**   
-Using `photutils` (2) : Aperture Photometry  
-Using `photutils` (3) : Background Estimation  
-Using `photutils` (4) : Extended Sources (detection and morphology)
+**Session 07 (2017-05-08)**   
+
+Using `photutils` (2) : Background Estimation (SExtractor)   
+Using `photutils` (3) : Background Estimation (Annulus)  
+Using `photutils` (4) : Aperture Photometry   
+* Corresponding notebook = 09, 10, 11  
+
+
+**Session 08 (2017-05-16)** 
+
+Using `photutils` (5) : Extended Sources (detection and morphology)
+* Corresponding notebook = 12
 
 
 
