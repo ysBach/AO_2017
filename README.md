@@ -52,7 +52,7 @@ Introduction + TA show using [HLA](http://hla.stsci.edu/)
 **Session 02 (2017-04-18)**   
 
 Basic Knowledge on Preprocessing, Aperture Photometry, and Statistics
-* Presentation (not uploaded yet)
+* [Presentation](https://drive.google.com/open?id=0B-MLFRYnMxUvcnVjZ19teS02LWdxR004Mlp4MFlibWtLVmNj)
 * Corresponding notebook = Appendix A
 
 
