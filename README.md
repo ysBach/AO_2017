@@ -89,7 +89,7 @@ Using `photutils` (5) : Extended Sources (detection and morphology)
 * Corresponding notebook = 12
 
 
-** Group Project Topic Candidates **: See [here](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/00_Group_Project_Topics.ipynb)
+** Group Project Topic Candidates ** : See [here](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/00_Group_Project_Topics.ipynb)
 
 You can freely choose your own group project topics other than these list (it's even encouraged).
 
