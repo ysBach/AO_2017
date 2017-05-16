@@ -1,10 +1,12 @@
 # AO2017
 
+All the lecture notes primarily made by Yoonsoo P. Bach. I tried not to make typo, logically wrong statement, etc. If any problem is there in the note, that's solely my fault, so please be kind and let me know so that the notes can be updated.
+
 ## Instructors
 Astronomical Observation and Lab. 1 (AO1) at Seoul National University (SNU) in 2017 
 
 * Lecturer: professor Masateru Ishiguro 
-* TA: Yoonsoo P. Bach & Na-eun Shin
+* TA: **Yoonsoo P. Bach** & Na-eun Shin
 
 For the detailed introduction, see the prefaces.
 
@@ -27,9 +29,9 @@ Preface in [English](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/mast
 06. [Simple Preprocessing Using Python](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/06_Preprocessing_with_Python.ipynb)
 07. [Cosmic-Ray Rejection](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/07_Cosmic_Ray_Rejection.ipynb)
 08. [photutils (1): Star Finding](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/08_Photutils_StarFinder.ipynb)
-09. [photutils (2): SExtractor Sky]
-10. [photutils (3): Annulus Sky]
-11. [photutils (4): Aperture Photometry]
+09. [photutils (2): SExtractor Sky](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/09_Photutils_SExtractor_Background.ipynb)
+10. [photutils (3): Annulus Sky](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/10_Photutils_Annulus_Background.ipynb)
+11. [photutils (4): Aperture Photometry](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/11_Photutils_Aperture_Photometry.ipynb)
 12. [photutils (5): Extended Sources and Morphology
 * Appendix A. [Photometric Errors](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/App_A_Photometric_Errors.ipynb)
 * Appendix B. [Using Astropy for FITS](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/App_B_Using_Astropy_for_FITS.ipynb)
@@ -38,7 +40,7 @@ Preface in [English](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/mast
 Notes 00, 01, and 02 are not covered in class times.
 
 
-### Schedules and Presentation
+## Schedules and Presentation
 
 **Session 01 (2017-04-13)**   
 
@@ -50,7 +52,7 @@ Introduction + TA show using [HLA](http://hla.stsci.edu/)
 **Session 02 (2017-04-18)**   
 
 Basic Knowledge on Preprocessing, Aperture Photometry, and Statistics
-* Presentation (not uploaded yet)
+* [Presentation](https://drive.google.com/open?id=0B-MLFRYnMxUvcnVjZ19teS02LWdxR004Mlp4MFlibWtLVmNj)
 * Corresponding notebook = Appendix A
 
 
@@ -87,7 +89,10 @@ Using `photutils` (5) : Extended Sources (detection and morphology)
 * Corresponding notebook = 12
 
 
+## Group Project Topic Candidates
+See [here](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/00_Group_Project_Topics.ipynb)
 
+You can freely choose your own group project topics other than these list (it's even encouraged).
 
 
 
