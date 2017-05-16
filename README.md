@@ -32,7 +32,7 @@ Preface in [English](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/mast
 09. [photutils (2): SExtractor Sky](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/09_Photutils_SExtractor_Background.ipynb)
 10. [photutils (3): Annulus Sky](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/10_Photutils_Annulus_Background.ipynb)
 11. [photutils (4): Aperture Photometry](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/11_Photutils_Aperture_Photometry.ipynb)
-12. [photutils (5): Extended Sources and Morphology
+12. [photutils (5): Extended Sources and Morphology, Sersic Profile](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/12_Photutils_Extended_Sources.ipynb)
 * Appendix A. [Photometric Errors](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/App_A_Photometric_Errors.ipynb)
 * Appendix B. [Using Astropy for FITS](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/App_B_Using_Astropy_for_FITS.ipynb)
 * Appendix C. [Spyder](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/App_C_Spyder.ipynb)
@@ -85,12 +85,12 @@ Using `photutils` (4) : Aperture Photometry
 
 **Session 08 (2017-05-16)** 
 
-Using `photutils` (5) : Extended Sources (detection and morphology)
+Using `photutils` (5) : Extended Sources and Morphology, Sersic Profile
 * Corresponding notebook = 12
 
 
 ## Group Project Topic Candidates
-See [here](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/00_Group_Project_Topics.ipynb)
+See [here](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/00_Group_Project_Topics.ipynb). This contains only the theory-group topics yet.
 
 You can freely choose your own group project topics other than these list (it's even encouraged).
 
