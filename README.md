@@ -19,7 +19,7 @@ The following lecture notes only gives you idea how to use tools for data reduct
 
 Preface in [English](https://github.com/ysBach/AO_2017/blob/master/00_Preface_English.md) and [Korean](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/00_Preface-Korean.ipynb) (Korean version is not being updated for months: please see the Eng version)
 
-​		Photometry (AO1)
+
 
 1. [Installation](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/01_Installation.ipynb) and [LINUX Basic](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/01_LINUX_Shell.ipynb)
 
@@ -27,9 +27,13 @@ Preface in [English](https://github.com/ysBach/AO_2017/blob/master/00_Preface_En
 
 3. [Get the Taste](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/03_Get_the_Taste.ipynb) (showing few examples using HST data)
 
+   -----
+
+   Photometry (AO1)
+
 4. [Reducing Ground-Based Observation Data: Concepts](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/04_Ground_Based_Concept.ipynb)
 
-5. [How to IRAF](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/05_IRAF_Tutorial.ipynb)
+5. How to IRAF (see appendix D)
 
 6. [Simple Preprocessing Using Python](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/06_Preprocessing_with_Python.ipynb)
 
@@ -55,8 +59,9 @@ Preface in [English](https://github.com/ysBach/AO_2017/blob/master/00_Preface_En
 * Appendix A. [Photometric Errors](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/App_A_Photometric_Errors.ipynb)
 * Appendix B. [Using Astropy for FITS](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/App_B_Using_Astropy_for_FITS.ipynb)
 * Appendix C. [Spyder](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/App_C_Spyder.ipynb)
+* Appendix D. [IRAF](https://github.com/ysBach/AO_2017/blob/master/App_D_IRAF.md)
 
-Notes 00, 01, and 02 are not covered in class times.
+Notes 01, 02, and 03 are not covered in class times.
 
 ## Schedules
 
