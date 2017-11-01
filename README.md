@@ -56,6 +56,8 @@ Preface in [English](https://github.com/ysBach/AO_2017/blob/master/00_Preface_En
     Spectroscopy (AO2)
 
 14. [Spectroscopy Concepts](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/14_Spectroscopy_Concept.ipynb)
+
+15. [Spectroscopy in Python](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/15_Spectroscopy_in_Python.ipynb)
 * Appendix A. [Photometric Errors](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/App_A_Photometric_Errors.ipynb)
 * Appendix B. [Using Astropy for FITS](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/App_B_Using_Astropy_for_FITS.ipynb)
 * Appendix C. [Spyder](http://nbviewer.jupyter.org/github/ysbach/AO_2017/blob/master/App_C_Spyder.ipynb)
@@ -71,7 +73,7 @@ Notes 01, 02, and 03 are not covered in class times.
 | -------------- | ---------------------------------------- | ---------------------------------------- |
 | 2017-04-13     | Introduction + TA show using [HLA](http://hla.stsci.edu/) | [Presentation](https://drive.google.com/file/d/0B-MLFRYnMxUvQ1BJTkhNcVNveFFkYURLdDVMaWZkVDA5V05J/view?usp=sharing), Corresponding notebook = 03 |
 | 2017-04-18     | Basic Knowledge on Preprocessing, Aperture Photometry, and Statistics | [Presentation](https://drive.google.com/open?id=0B-MLFRYnMxUvcnVjZ19teS02LWdxR004Mlp4MFlibWtLVmNj)  Corresponding notebook = Appendix A |
-| 2017-04-20, 25 | Legacy sessions: IRAF Tutorial Using Archived Data | Corresponding notebook = 05 (and 04)     |
+| 2017-04-20, 25 | Legacy sessions: IRAF Tutorial Using Archived Data | Corresponding notebook = App D (and 04)  |
 | 2017-04-27     | Preprocessing using Python with `ccdproc` | Corresponding notebook = 06              |
 | 2017-05-02     | Cosmic-Ray Rejection + Using `photutils` (1) : Star Finding (`DAOStarFinder`) and Aperture Plot | Corresponding notebook = 07 & 08         |
 | 2017-05-08     | Using `photutils` (2) : Background Estimation (SExtractor) + Using `photutils` (3) : Background Estimation (Annulus) + Using `photutils` (4) : Aperture Photometry | Corresponding notebook = 09, 10, 11      |
@@ -79,17 +81,13 @@ Notes 01, 02, and 03 are not covered in class times.
 
 ### Spectroscopy (AO2)
 
-| Date           | Contents                                 | Notes                       |
-| -------------- | ---------------------------------------- | --------------------------- |
-| 2017-10-10     | Spectroscopy Concepts                    | Corresponding notebook = 14 |
-| 2017-10-19, 23 | Legacy sessions: Using IRAF for spectroscopy |                             |
-| 2017-10-       | Wavelength Identification                |                             |
-|                | Coordinate transformation                |                             |
-|                | Background (sky) Subtraction             |                             |
-|                | Flux Calibration                         |                             |
-|                | Further corrections                      |                             |
-|                |                                          |                             |
-|                |                                          |                             |
+| Date                   | Contents                                 | Notes                          |
+| ---------------------- | ---------------------------------------- | ------------------------------ |
+| 2017-10-10             | Spectroscopy Concepts                    | Corresponding notebook = 14    |
+| 2017-10-19, 23, 26, 30 | Legacy sessions: Using IRAF for spectroscopy | Corresponding notebook = App D |
+| 2017-11-02             | Spectroscopy in Python                   | Corresponding notebook = 15    |
+|                        |                                          |                                |
+|                        |                                          |                                |
 
 
 
