@@ -1,6 +1,13 @@
 # This is a Deprecated Repository.
 This repo is left only as an archival purpose. 
-See the latest SNU AO Class notes at [here](https://github.com/ysBach/SNU_AOclass)
+
+See the latest SNU AO Class notes at 
+
+**[here](https://github.com/ysBach/SNU_AOclass)**
+
+----
+----
+----
 
 # AO2017
 
